@@ -1,0 +1,4 @@
+node_modules/
+.witness/runs/*.tmp
+examples/shop/.witness/
+*.log

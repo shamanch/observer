@@ -1,0 +1,21 @@
+{
+  "name": "witness",
+  "version": "0.1.0",
+  "description": "Проверяет, что AI-агент реально сделал задачу: критерии приёмки → детерминированный прогон → pass/fail + badge",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "witness": "./bin/witness.js"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "witness": "node bin/witness.js",
+    "test": "node --test",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "license": "MIT"
+}

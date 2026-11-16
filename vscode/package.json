@@ -1,0 +1,40 @@
+{
+  "name": "witness-vscode",
+  "displayName": "Witness",
+  "description": "Проверяет, что AI-агент реально сделал задачу: критерии приёмки, прогон, badge",
+  "version": "0.1.0",
+  "publisher": "witness",
+  "private": true,
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Testing", "Other"],
+  "main": "./src/extension.cjs",
+  "activationEvents": [
+    "onCommand:witness.init",
+    "onCommand:witness.claim",
+    "onCommand:witness.run",
+    "onCommand:witness.report"
+  ],
+  "contributes": {
+    "commands": [
+      { "command": "witness.init", "title": "Witness: инициализировать проект" },
+      { "command": "witness.claim", "title": "Witness: критерии приёмки задачи" },
+      { "command": "witness.run", "title": "Witness: проверить результат" },
+      { "command": "witness.report", "title": "Witness: открыть отчёт" }
+    ],
+    "configuration": {
+      "title": "Witness",
+      "properties": {
+        "witness.cliPath": {
+          "type": "string",
+          "default": "witness",
+          "description": "Команда запуска CLI. Для локальной разработки: node C:/путь/до/witness/bin/witness.js"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "check": "node --check src/extension.cjs"
+  }
+}
