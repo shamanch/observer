@@ -144,6 +144,11 @@ const RULES: Rule[] = [
           path: route,
           expect: { bodyContains: ["<"] },
         }),
+        criterion(`Страница ${route} открывается без ошибок в консоли`, {
+          type: "browser",
+          path: route,
+          expect: { consoleErrors: "none" },
+        }),
         criterion("Новый элемент виден и работает в браузере", {
           type: "manual",
           steps: [`Открыть ${route}`, `Найти элемент из задачи: «${task.slice(0, 80)}»`, "Проверить, что действие выполняется без ошибок в консоли"],

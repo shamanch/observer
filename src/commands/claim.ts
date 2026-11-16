@@ -2,7 +2,7 @@ import { existsSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { createInterface } from "node:readline/promises";
 import { paths, readConfig } from "../core/config.ts";
-import { countHttp, makeClaimId, validateClaim, type Claim } from "../core/criteria.ts";
+import { countMachine, makeClaimId, validateClaim, type Claim } from "../core/criteria.ts";
 import { printCriteria } from "../core/format.ts";
 import { generateCriteria, llmOptionsFromEnv } from "../core/llm.ts";
 
@@ -55,13 +55,13 @@ export async function claim(root: string, task: string, flags: ClaimFlags): Prom
   }
 
   const claimData: Claim = draft.claim;
-  const httpCount = countHttp(claimData.criteria);
+  const machineCount = countMachine(claimData.criteria);
 
   console.log(`\nЗадача: ${claimData.task}`);
   console.log(`Источник критериев: ${generated.source === "llm" ? "модель + валидация" : "шаблоны (без LLM)"}`);
-  console.log(`Критерии (${claimData.criteria.length}), http-проверок: ${httpCount}\n`);
+  console.log(`Критерии (${claimData.criteria.length}), машинных проверок: ${machineCount}\n`);
   printCriteria(claimData.criteria);
-  if (httpCount === 0) {
+  if (machineCount === 0) {
     console.log("\n  внимание: все критерии ручные — автоматической проверки не будет.");
   }
 

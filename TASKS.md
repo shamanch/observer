@@ -105,6 +105,20 @@
 
 ---
 
+## Эпик 6. Браузерные проверки
+
+### T6.1 — `check.type: "browser"`
+- **files:** `src/core/browser.ts`, `src/core/criteria.ts`, `src/core/runner.ts`, `src/core/claimgen.ts`
+- **acceptance:** критерий открывает страницу в Chromium, выполняет `click`/`fill`, проверяет `visible`, `text`, `consoleErrors`; Playwright загружается лениво и отсутствует в `dependencies`; без пакета — статус `error` с командой установки, не падение.
+- **verify:** `node --test test/browser.test.ts` (фейковый драйвер, реальный браузер в CI не нужен).
+
+### T6.2 — SQLite-история
+- **files:** `src/core/ledger.ts`, `test/ledger.test.ts`
+- **acceptance:** прогоны пишутся в `.witness/witness.db` через `node:sqlite`; старые `.witness/runs/*.json` импортируются один раз и не удаляются; чтение не создаёт базу.
+- **verify:** `node --test test/ledger.test.ts` + `witness run` дважды → `ledgerHash.runs === 2`.
+
+---
+
 ## Definition of Done (для всего MVP)
 
 1. `node --test` — все тесты зелёные.

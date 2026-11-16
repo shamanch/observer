@@ -58,6 +58,17 @@ test("API-задача проверяет content-type", () => {
   assert.equal(hasJson, true);
 });
 
+test("UI-задача получает браузерную проверку консоли", () => {
+  const criteria = generateHeuristic("Сверстать страницу /pricing с новым блоком");
+  const browserCheck = criteria.find((criterion) => criterion.check.type === "browser");
+  assert.ok(browserCheck, "нет browser-критерия");
+  if (browserCheck.check.type === "browser") {
+    assert.equal(browserCheck.check.path, "/pricing");
+    assert.equal(browserCheck.check.expect.consoleErrors, "none");
+  }
+  assert.ok(criteria.some((criterion) => criterion.check.type === "manual"));
+});
+
 test("генерация детерминирована", () => {
   const task = "Добавить экспорт отчёта в CSV на странице /reports";
   assert.deepEqual(generateHeuristic(task), generateHeuristic(task));

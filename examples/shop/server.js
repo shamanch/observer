@@ -9,6 +9,26 @@ const rows = [
 const server = createServer((req, res) => {
   const url = new URL(req.url ?? "/", "http://127.0.0.1");
 
+  if (url.pathname === "/") {
+    res.writeHead(200, { "content-type": "text/html; charset=utf-8" });
+    res.end(`<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Магазин</title></head>
+<body>
+  <h1>Магазин</h1>
+  <button id="export">Скачать CSV</button>
+  <p id="status"></p>
+  <script>
+    document.getElementById("export").addEventListener("click", async () => {
+      const response = await fetch("/api/export");
+      document.getElementById("status").textContent = "Готово: " + response.status;
+    });
+  </script>
+</body>
+</html>`);
+    return;
+  }
+
   if (url.pathname === "/api/export") {
     const csv = ["id,name,amount", ...rows.map((row) => `${row.id},${row.name},${row.amount}`)].join("\n");
     res.writeHead(200, { "content-type": "text/csv; charset=utf-8" });

@@ -1,5 +1,6 @@
 import type { WitnessConfig } from "./config.ts";
 import type { Claim } from "./criteria.ts";
+import { runBrowserCheck, type BrowserLoader } from "./browser.ts";
 import { compareToBaseline, type BaselineFile } from "./differential.ts";
 import { runHttpCheck } from "./http.ts";
 import { scanRepo } from "./tamper.ts";
@@ -10,6 +11,8 @@ export type RunOptions = {
   baseline?: BaselineFile | null;
   baseUrl?: string;
   fetchImpl?: typeof fetch;
+  /** Подмена загрузчика Playwright — чтобы тесты не тянули браузер. */
+  browserLoader?: BrowserLoader;
 };
 
 /** Прогоняет все критерии последовательно. Исключения наружу не выходят. */
@@ -18,13 +21,19 @@ export async function runClaim(claim: Claim, config: WitnessConfig, options: Run
   const criteria: CheckResult[] = [];
 
   for (const criterion of claim.criteria) {
-    criteria.push(
-      await runHttpCheck(criterion, {
-        config,
-        baseUrl: options.baseUrl,
-        fetchImpl: options.fetchImpl,
-      }),
-    );
+    const result =
+      criterion.check.type === "browser"
+        ? await runBrowserCheck(criterion, {
+            config,
+            baseUrl: options.baseUrl,
+            loader: options.browserLoader,
+          })
+        : await runHttpCheck(criterion, {
+            config,
+            baseUrl: options.baseUrl,
+            fetchImpl: options.fetchImpl,
+          });
+    criteria.push(result);
   }
 
   const passed = criteria.filter((item) => item.status === "pass").length;

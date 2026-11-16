@@ -76,6 +76,69 @@ test("validateClaim отклоняет пустой список критери�
   assert.equal(result.ok, false);
 });
 
+test("validateClaim принимает browser-критерий", () => {
+  const result = validateClaim({
+    ...valid,
+    criteria: [
+      {
+        id: "ui",
+        text: "Страница открывается без ошибок в консоли",
+        check: {
+          type: "browser",
+          path: "/reports",
+          steps: [{ action: "click", selector: "#export" }],
+          expect: { consoleErrors: "none", visible: [".toast"] },
+        },
+      },
+    ],
+  });
+  assert.equal(result.ok, true);
+  if (result.ok) {
+    const check = result.claim.criteria[0]?.check;
+    assert.equal(check?.type, "browser");
+    if (check?.type === "browser") {
+      assert.equal(check.steps?.length, 1);
+      assert.deepEqual(check.expect.visible, [".toast"]);
+      assert.equal(check.expect.consoleErrors, "none");
+    }
+  }
+});
+
+test("validateClaim отклоняет browser-критерий без утверждений", () => {
+  const result = validateClaim({
+    ...valid,
+    criteria: [
+      {
+        id: "empty-browser",
+        text: "Ничего не проверяет",
+        check: { type: "browser", path: "/", expect: {} },
+      },
+    ],
+  });
+  assert.equal(result.ok, false);
+  if (!result.ok) assert.match(result.errors.join(" "), /ни одного утверждения/);
+});
+
+test("validateClaim отклоняет неизвестное действие в browser-шагах", () => {
+  const result = validateClaim({
+    ...valid,
+    criteria: [
+      {
+        id: "bad-step",
+        text: "Шаг с опечаткой",
+        check: {
+          type: "browser",
+          path: "/",
+          steps: [{ action: "scroll", selector: "#x" }],
+          expect: { visible: ["#x"] },
+        },
+      },
+    ],
+  });
+  assert.equal(result.ok, false);
+  if (!result.ok) assert.match(result.errors.join(" "), /неизвестное действие/);
+});
+
 test("uniqueCriterionIds разводит дубликаты", () => {
   const criteria = [
     { id: "same", text: "a", required: true },

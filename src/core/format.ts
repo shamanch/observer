@@ -12,6 +12,7 @@ const ICON: Record<CheckResult["status"], string> = {
 
 export function describeCheck(criterion: Criterion): string {
   if (criterion.check.type === "manual") return "manual";
+  if (criterion.check.type === "browser") return `browser ${criterion.check.path}`;
   return `${criterion.check.method} ${criterion.check.path}`;
 }
 

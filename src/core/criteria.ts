@@ -27,7 +27,29 @@ export type ManualCheck = {
   steps: string[];
 };
 
-export type Check = HttpCheck | ManualCheck;
+export type BrowserStep =
+  | { action: "click"; selector: string }
+  | { action: "fill"; selector: string; value: string };
+
+export type BrowserExpect = {
+  /** Селекторы, которые обязаны быть видимы после шагов. */
+  visible?: string[];
+  /** Подстроки в тексте страницы. */
+  text?: string[];
+  /** Ошибки консоли/необработанные исключения страницы. */
+  consoleErrors?: "none";
+};
+
+export type BrowserCheck = {
+  type: "browser";
+  /** Адрес или путь относительно baseUrl. */
+  path: string;
+  /** Действия до проверки: клик, ввод. */
+  steps?: BrowserStep[];
+  expect: BrowserExpect;
+};
+
+export type Check = HttpCheck | BrowserCheck | ManualCheck;
 
 export type Criterion = {
   id: string;
@@ -102,6 +124,76 @@ function validateCheck(value: unknown, where: string, errors: string[]): Check |
       return null;
     }
     return { type: "manual", steps };
+  }
+  if (value.type === "browser") {
+    if (typeof value.path !== "string" || !value.path.trim()) {
+      errors.push(`${where}: browser-проверка без path`);
+      return null;
+    }
+    const steps: BrowserStep[] = [];
+    if (value.steps !== undefined) {
+      if (!Array.isArray(value.steps)) {
+        errors.push(`${where}: steps должен быть массивом`);
+      } else {
+        value.steps.forEach((raw, index) => {
+          if (!isObject(raw)) {
+            errors.push(`${where}: steps[${index}] должен быть объектом`);
+            return;
+          }
+          const selector = typeof raw.selector === "string" ? raw.selector.trim() : "";
+          if (!selector) {
+            errors.push(`${where}: steps[${index}] без selector`);
+            return;
+          }
+          if (raw.action === "click") {
+            steps.push({ action: "click", selector });
+            return;
+          }
+          if (raw.action === "fill") {
+            if (typeof raw.value !== "string") {
+              errors.push(`${where}: steps[${index}] fill без value`);
+              return;
+            }
+            steps.push({ action: "fill", selector, value: raw.value });
+            return;
+          }
+          errors.push(`${where}: steps[${index}] неизвестное действие ${String(raw.action)}`);
+        });
+      }
+    }
+    if (!isObject(value.expect)) {
+      errors.push(`${where}: browser-проверка без expect`);
+      return null;
+    }
+    const expect: BrowserExpect = {};
+    let assertions = 0;
+    for (const key of ["visible", "text"] as const) {
+      const raw = value.expect[key];
+      if (raw === undefined) continue;
+      const list = Array.isArray(raw)
+        ? raw.filter((item): item is string => typeof item === "string" && item.trim().length > 0)
+        : [];
+      if (list.length === 0) errors.push(`${where}: expect.${key} пуст`);
+      else {
+        expect[key] = list;
+        assertions += 1;
+      }
+    }
+    if (value.expect.consoleErrors !== undefined) {
+      if (value.expect.consoleErrors === "none") {
+        expect.consoleErrors = "none";
+        assertions += 1;
+      } else {
+        errors.push(`${where}: expect.consoleErrors поддерживает только "none"`);
+      }
+    }
+    if (assertions === 0) {
+      errors.push(`${where}: browser-проверка не содержит ни одного утверждения`);
+      return null;
+    }
+    const check: BrowserCheck = { type: "browser", path: value.path.trim(), expect };
+    if (steps.length > 0) check.steps = steps;
+    return check;
   }
   if (value.type !== "http") {
     errors.push(`${where}: неизвестный тип проверки ${String(value.type)}`);
@@ -216,4 +308,9 @@ export function validateClaim(value: unknown): ValidationResult {
 
 export function countHttp(criteria: Criterion[]): number {
   return criteria.filter((criterion) => criterion.check.type === "http").length;
+}
+
+/** Машинные проверки: всё, что не требует человека (http и browser). */
+export function countMachine(criteria: Criterion[]): number {
+  return criteria.filter((criterion) => criterion.check.type !== "manual").length;
 }
