@@ -3,6 +3,14 @@
   "version": "0.1.0",
   "description": "Детерминированная проверка результата AI-агента: утверждённые критерии, прогон без LLM-судьи, отчёт и проверяемый badge",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shamanch/observer.git"
+  },
+  "homepage": "https://github.com/shamanch/observer#readme",
+  "bugs": {
+    "url": "https://github.com/shamanch/observer/issues"
+  },
   "bin": {
     "witness": "./dist/bin/witness.js"
   },

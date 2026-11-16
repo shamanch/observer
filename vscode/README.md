@@ -21,7 +21,7 @@
 
 ```json
 {
-  "witness.cliPath": "node C:/Users/admin/witness/bin/witness.js"
+  "witness.cliPath": "node C:/путь/до/observer/bin/witness.js"
 }
 ```
 

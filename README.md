@@ -27,8 +27,8 @@ witness run
 Нужен Node.js 24+ (в нём уже есть встроенное выполнение TypeScript и `node:sqlite`).
 
 ```bash
-git clone <этот-репозиторий> witness
-cd witness
+git clone https://github.com/shamanch/observer.git
+cd observer
 node bin/witness.js --help
 ```
 

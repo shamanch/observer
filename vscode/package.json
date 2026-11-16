@@ -5,6 +5,14 @@
   "version": "0.1.0",
   "publisher": "witness",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shamanch/observer"
+  },
+  "homepage": "https://github.com/shamanch/observer#readme",
+  "bugs": {
+    "url": "https://github.com/shamanch/observer/issues"
+  },
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -30,7 +38,7 @@
         "witness.cliPath": {
           "type": "string",
           "default": "witness",
-          "description": "Команда запуска CLI. Для локальной разработки: node C:/путь/до/witness/bin/witness.js"
+          "description": "Команда запуска CLI. Для локальной разработки: node C:/путь/до/observer/bin/witness.js"
         }
       }
     }
