@@ -123,14 +123,26 @@ export async function runBrowserCheck(criterion: Criterion, options: BrowserOpti
 
     page.on("pageerror", (payload) => consoleErrors.push(`pageerror: ${describeConsole(payload)}`));
     page.on("console", (payload) => {
-      const item = payload as { type?: () => string };
+      const item = payload as {
+        type?: () => string;
+        location?: () => { url?: string };
+      };
       let kind = "";
       try {
         kind = typeof item.type === "function" ? item.type() : "";
       } catch {
         kind = "";
       }
-      if (kind === "error") consoleErrors.push(describeConsole(payload));
+      if (kind !== "error") return;
+      // Браузер сам запрашивает /favicon.ico и пишет 404 в консоль. Это не ошибка приложения.
+      let locationUrl = "";
+      try {
+        locationUrl = item.location?.().url ?? "";
+      } catch {
+        locationUrl = "";
+      }
+      if (/\/favicon\.ico(\?|$)/.test(locationUrl)) return;
+      consoleErrors.push(describeConsole(payload));
     });
 
     await page.goto(url, { waitUntil: "load", timeout });

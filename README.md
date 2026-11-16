@@ -171,7 +171,7 @@ src/core/             критерии, http- и браузерные прове
 src/commands/         init, claim, run, report, badge, wrap
 vscode/               тонкая обёртка для VS Code
 examples/shop/        учебный проект
-test/                 73 теста на node:test
+test/                 75 тестов на node:test
 ```
 
 Зависимостей нет (`dependencies: {}`), сборки нет — Node исполняет TypeScript напрямую.

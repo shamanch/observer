@@ -7,7 +7,7 @@ import type { Criterion } from "../src/core/criteria.ts";
 type FakeOptions = {
   visible?: Record<string, boolean>;
   body?: string;
-  consoleErrors?: string[];
+  consoleErrors?: Array<string | { text: string; url: string }>;
   gotoError?: string;
 };
 
@@ -23,8 +23,10 @@ function fakePlaywright(options: FakeOptions = {}): Fake {
     async goto(url) {
       calls.push(`goto ${url}`);
       if (options.gotoError) throw new Error(options.gotoError);
-      for (const message of options.consoleErrors ?? []) {
-        for (const handler of handlers.console ?? []) handler({ type: () => "error", text: () => message });
+      for (const entry of options.consoleErrors ?? []) {
+        const text = typeof entry === "string" ? entry : entry.text;
+        const location = typeof entry === "string" ? undefined : { url: entry.url };
+        for (const handler of handlers.console ?? []) handler({ type: () => "error", text: () => text, location: () => location });
       }
     },
     async click(selector) {
@@ -166,6 +168,35 @@ test("без playwright — понятная ошибка, а не стектр�
 
   assert.equal(result.status, "error");
   assert.equal(result.detail, PLAYWRIGHT_HINT);
+});
+
+test("404 favicon не считается ошибкой приложения", async () => {
+  const fake = fakePlaywright({
+    body: "ok",
+    consoleErrors: [
+      { text: "Failed to load resource: the server responded with a status of 404", url: "http://127.0.0.1:3000/favicon.ico" },
+    ],
+  });
+  const result = await runBrowserCheck(
+    criterion({ type: "browser", path: "/", expect: { consoleErrors: "none" } }),
+    { config: config(), loader: async () => fake.module },
+  );
+  assert.equal(result.status, "pass");
+  assert.match(result.detail, /ошибок в консоли нет/);
+});
+
+test("404 другого ресурса остаётся ошибкой", async () => {
+  const fake = fakePlaywright({
+    body: "ok",
+    consoleErrors: [
+      { text: "Failed to load resource: the server responded with a status of 404", url: "http://127.0.0.1:3000/app.js" },
+    ],
+  });
+  const result = await runBrowserCheck(
+    criterion({ type: "browser", path: "/", expect: { consoleErrors: "none" } }),
+    { config: config(), loader: async () => fake.module },
+  );
+  assert.equal(result.status, "fail");
 });
 
 test("падение загрузчика тоже даёт error, а не исключение", async () => {
