@@ -1,19 +1,38 @@
 {
-  "name": "witness",
+  "name": "witness-cli",
   "version": "0.1.0",
-  "description": "Проверяет, что AI-агент реально сделал задачу: критерии приёмки → детерминированный прогон → pass/fail + badge",
-  "private": true,
+  "description": "Детерминированная проверка результата AI-агента: утверждённые критерии, прогон без LLM-судьи, отчёт и проверяемый badge",
   "type": "module",
   "bin": {
-    "witness": "./bin/witness.js"
+    "witness": "./dist/bin/witness.js"
   },
   "engines": {
-    "node": ">=22.18"
+    "node": ">=24"
   },
+  "files": [
+    "dist",
+    "skills",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "ai",
+    "agent",
+    "llm",
+    "verification",
+    "acceptance-testing",
+    "testing",
+    "qa",
+    "cli",
+    "code-review",
+    "badge"
+  ],
   "scripts": {
+    "build": "node scripts/build.mjs",
+    "prepare": "node scripts/build.mjs",
     "witness": "node bin/witness.js",
     "test": "node --test",
-    "typecheck": "tsc --noEmit"
+    "golden": "node eval/golden/run.mjs"
   },
   "dependencies": {},
   "devDependencies": {},

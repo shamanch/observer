@@ -76,3 +76,18 @@ test("без differential отчёт честно говорит, что баз�
   const html = buildReport({ run: noDiff, claim: null });
   assert.match(html, /База не зафиксирована/);
 });
+
+test("без машинных проверок отчёт говорит «НЕ ПРОВЕРЕНО»", () => {
+  const manualOnly: RunFile = {
+    ...run,
+    total: 2,
+    passed: 0,
+    failed: 0,
+    skipped: 2,
+    requiredFailed: 0,
+    criteria: run.criteria.map((item) => ({ ...item, status: "skip", manual: true, required: true })),
+  };
+  const html = buildReport({ run: manualOnly, claim: null });
+  assert.match(html, /НЕ ПРОВЕРЕНО/);
+  assert.match(html, /verdict skip/);
+});

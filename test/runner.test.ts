@@ -3,7 +3,7 @@ import { createServer } from "node:http";
 import { test } from "node:test";
 import type { WitnessConfig } from "../src/core/config.ts";
 import { validateClaim, type Claim } from "../src/core/criteria.ts";
-import { exitCodeFor, runClaim } from "../src/core/runner.ts";
+import { exitCodeFor, machineChecks, runClaim } from "../src/core/runner.ts";
 
 function makeClaim(): Claim {
   const result = validateClaim({
@@ -75,5 +75,7 @@ test("все обязательные прошли — exit-код 0", async () 
   const manualOnly: Claim = { ...claim, criteria: [{ ...claim.criteria[2]! }] };
   const manualRecord = await runClaim(manualOnly, config, { scanTamper: false });
   assert.equal(manualRecord.requiredFailed, 0);
-  assert.equal(exitCodeFor(manualRecord), 0);
+  assert.equal(machineChecks(manualRecord), 0);
+  // Ручных критериев недостаточно для «прошло»: подтверждать нечем.
+  assert.equal(exitCodeFor(manualRecord), 1);
 });

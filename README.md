@@ -24,7 +24,7 @@ witness run
 
 ## Установка
 
-Нужен Node.js 22.18+ (в нём уже есть встроенное выполнение TypeScript).
+Нужен Node.js 24+ (в нём уже есть встроенное выполнение TypeScript и `node:sqlite`).
 
 ```bash
 git clone <этот-репозиторий> witness
@@ -32,10 +32,11 @@ cd witness
 node bin/witness.js --help
 ```
 
-Глобально:
+Глобально из npm (пакет ещё не опубликован — до публикации используйте `npm link`):
 
 ```bash
-npm link          # после этого доступна команда witness
+npm i -g witness-cli   # после публикации
+npm link               # сейчас: доступна команда witness
 ```
 
 ## Быстрый старт (5 минут)
@@ -73,6 +74,23 @@ witness badge       # .witness/badge.svg + badge.json
 
 Флаги: `--json`, `--base-url <url>`, `--no-tamper`, `--no-llm`, `--dry-run`.
 
+## Скилл для агента
+
+Чтобы агент проверял себя сам, перед словом «готово», установите навык:
+
+```bash
+# OpenCode
+cp -r skills/witness ~/.config/opencode/skills/
+
+# Claude Code
+cp -r skills/witness ~/.claude/skills/
+```
+
+Навык требует: человек утвердил критерии, `witness run --baseline` снят до работы,
+а после работы — свежий `witness run` с exit 0. Агенту запрещено ослаблять критерии
+и считать ручные шаги доказательством. Для каталога aitmpl навык лежит в
+`skills/witness/SKILL.md` (категория `development`).
+
 ## Три механики, которые отличают это от «ещё одной проверки»
 
 **① Детерминизм.** LLM участвует один раз — при генерации критериев, с подтверждением человеком.
@@ -99,15 +117,29 @@ witness badge       # .witness/badge.svg + badge.json
       "status": 200,
       "header": { "content-type": "text/csv" },
       "bodyContains": ["id,name"],
-      "jsonPath": { "count": 2 }
+      "bodyMinLines": 2
     }
   }
 }
 ```
 
+Для JSON-ответа:
+
+```json
+"expect": {
+  "status": 200,
+  "header": { "content-type": "application/json" },
+  "jsonNonEmpty": true
+}
+```
+
+`jsonNonEmpty` проверяет, что в ответе есть **непустой** список, а не просто символ `[`.
+`bodyMinLines` считает непустые строки — так CSV-критерий требует заголовок и хотя бы одну строку данных,
+а не «в теле есть перевод строки».
+
 `check.type` бывает три:
 
-- `http` — запрос и сравнение статуса, заголовков или тела;
+- `http` — запрос и сравнение статуса, заголовков или тела (включая `jsonPath`, `jsonNonEmpty`, `bodyMinLines`);
 - `browser` — открыть страницу в Chromium, при необходимости кликнуть/заполнить и проверить видимость, текст, ошибки консоли;
 - `manual` — шаг для человека; в отчёте помечается `РУЧНАЯ` и не влияет на exit-код.
 
@@ -165,20 +197,46 @@ export WITNESS_LLM_MODEL=gpt-4o-mini
 ## Что внутри
 
 ```
-bin/witness.js        точка входа
+bin/witness.js        точка входа (в репозитории)
 src/cli.ts            разбор аргументов, команды
 src/core/             критерии, http- и браузерные проверки, ledger, differential, tamper, отчёт, badge
 src/commands/         init, claim, run, report, badge, wrap
 vscode/               тонкая обёртка для VS Code
 examples/shop/        учебный проект
-test/                 75 тестов на node:test
+eval/golden/          golden-набор: 20 задач, сервер broken/fixed, харнесс метрик
+scripts/build.mjs     сборка dist/ для npm (встроенный stripTypeScriptTypes)
+skills/witness/       навык для агента (OpenCode, Claude Code, aitmpl)
+test/                 85 тестов на node:test
 ```
 
-Зависимостей нет (`dependencies: {}`), сборки нет — Node исполняет TypeScript напрямую.
+В репозитории сборки нет — Node исполняет TypeScript напрямую. Для npm `prepare`
+собирает `dist/`: Node запрещает type stripping для файлов внутри `node_modules`,
+поэтому опубликованный пакет содержит обычный JavaScript.
 
 ```bash
 node --test
+npm run golden
 ```
+
+## Golden-набор
+
+`npm run golden` поднимает одно приложение в двух состояниях — `broken` (фичи нет)
+и `fixed` (фича есть) — и прогоняет 20 задач. Для каждой: `claim` → `run --baseline`
+на broken → `run` на fixed.
+
+Замер на 16.11.2026:
+
+| Метрика | Результат |
+|---|---|
+| false-green (broken сказал «прошло») | **0/20** |
+| negative-green (непроверяемая задача сказала «прошло») | **0/7** |
+| positive false-red (фича есть, проверка упала) | **0/13** |
+| тавтологии (зелёные и на базе) | 10 — по одной на csv/api |
+| машинные критерии | 40/70 |
+
+Набор v1 покрывает HTTP-путь; браузерные кейсы в него не входят. Цифры — измерение
+на фиксированном наборе, а не гарантия для любого проекта. Подробности:
+`eval/golden/last-report.json`.
 
 ## Границы
 
@@ -190,7 +248,9 @@ node --test
 ## Метрика доверия
 
 **False-green rate < 1%** — доля случаев, когда Witness сказал «прошло», а на самом деле не работало.
-Всё остальное в продукте подчинено этой цифре.
+Всё остальное в продукте подчинено этой цифре. На golden-наборе v1 — **0/20**.
+Это не гарантия: набор покрывает HTTP-путь и фиксированные задачи, его нужно расширять
+вместе с продуктом.
 
 ## Лицензия
 

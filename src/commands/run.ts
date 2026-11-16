@@ -93,8 +93,10 @@ export async function run(root: string, flags: RunFlags): Promise<number> {
   if (flags.baseline && records[0]) {
     const base = baselineFrom(records[0].record);
     writeFileSync(p.baseline, `${JSON.stringify(base, null, 2)}\n`, "utf8");
-    console.log(`База зафиксирована: ${p.baseline}`);
-    console.log("Теперь отдайте задачу агенту и запустите witness run снова.\n");
+    if (!flags.json) {
+      console.log(`База зафиксирована: ${p.baseline}`);
+      console.log("Теперь отдайте задачу агенту и запустите witness run снова.\n");
+    }
   }
 
   if (flags.json) {

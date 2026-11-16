@@ -30,6 +30,11 @@ before(async () => {
       res.end(JSON.stringify({ user: { role: "admin", tags: ["a", "b"] }, count: 2 }));
       return;
     }
+    if (req.url === "/json-empty") {
+      res.writeHead(200, { "content-type": "application/json; charset=utf-8" });
+      res.end(JSON.stringify({ items: [] }));
+      return;
+    }
     if (req.url === "/csv") {
       res.writeHead(200, { "content-type": "text/csv" });
       res.end("id,name\n1,widget\n");
@@ -99,6 +104,39 @@ test("csv: заголовок и подстрока тела", async () => {
     { config: config() },
   );
   assert.equal(result.status, "pass");
+});
+
+test("jsonNonEmpty: вложенный непустой массив проходит", async () => {
+  const result = await runHttpCheck(
+    criterion({ type: "http", method: "GET", path: "/json", expect: { jsonNonEmpty: true } }),
+    { config: config() },
+  );
+  assert.equal(result.status, "pass");
+  assert.match(result.detail, /непустой список/);
+});
+
+test("jsonNonEmpty: пустой массив — fail, а не «есть скобка»", async () => {
+  const result = await runHttpCheck(
+    criterion({ type: "http", method: "GET", path: "/json-empty", expect: { jsonNonEmpty: true } }),
+    { config: config() },
+  );
+  assert.equal(result.status, "fail");
+  assert.match(result.detail, /не содержит непустого списка/);
+});
+
+test("bodyMinLines считает непустые строки", async () => {
+  const pass = await runHttpCheck(
+    criterion({ type: "http", method: "GET", path: "/csv", expect: { bodyMinLines: 2 } }),
+    { config: config() },
+  );
+  assert.equal(pass.status, "pass");
+
+  const fail = await runHttpCheck(
+    criterion({ type: "http", method: "GET", path: "/csv", expect: { bodyMinLines: 3 } }),
+    { config: config() },
+  );
+  assert.equal(fail.status, "fail");
+  assert.match(fail.detail, /ждали минимум 3/);
 });
 
 test("404 — это fail, а не ошибка сети", async () => {

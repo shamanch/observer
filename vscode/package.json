@@ -4,11 +4,12 @@
   "description": "Проверяет, что AI-агент реально сделал задачу: критерии приёмки, прогон, badge",
   "version": "0.1.0",
   "publisher": "witness",
-  "private": true,
+  "license": "MIT",
   "engines": {
     "vscode": "^1.85.0"
   },
   "categories": ["Testing", "Other"],
+  "keywords": ["witness", "ai", "agent", "testing", "verification"],
   "main": "./src/extension.cjs",
   "activationEvents": [
     "onCommand:witness.init",

@@ -1,4 +1,8 @@
 node_modules/
+dist/
 .witness/runs/*.tmp
 examples/shop/.witness/
+eval/golden/.work/
 *.log
+*.tgz
+*.vsix

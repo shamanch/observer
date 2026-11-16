@@ -1,0 +1,25 @@
+[
+  { "id": "csv-01", "kind": "positive", "template": "csv", "task": "Добавить экспорт отчёта в CSV на странице /api/export" },
+  { "id": "csv-02", "kind": "positive", "template": "csv", "task": "Сделать выгрузку заказов в csv на /api/orders/export" },
+  { "id": "csv-03", "kind": "positive", "template": "csv", "task": "Добавить скачивание отчёта на /api/download" },
+  { "id": "csv-04", "kind": "positive", "template": "csv", "task": "Реализовать export клиентов в CSV по адресу /api/clients/csv" },
+  { "id": "csv-05", "kind": "positive", "template": "csv", "task": "Отдавать csv через /export/report.csv" },
+
+  { "id": "login-01", "kind": "positive", "template": "login", "task": "Добавить логин через email и пароль" },
+  { "id": "login-02", "kind": "positive", "template": "login", "task": "Починить авторизацию на /login" },
+  { "id": "login-03", "kind": "positive", "template": "login", "task": "Добавить вход по паролю на /auth/signin" },
+  { "id": "login-04", "kind": "negative", "template": "login", "task": "Сделать login на /api/session" },
+  { "id": "login-05", "kind": "negative", "template": "login", "task": "Реализовать авторизацию через /signin" },
+
+  { "id": "api-01", "kind": "positive", "template": "api", "task": "Создать API /api/orders со списком заказов" },
+  { "id": "api-02", "kind": "positive", "template": "api", "task": "Отдавать JSON на /api/items" },
+  { "id": "api-03", "kind": "positive", "template": "api", "task": "Сделать endpoint /api/users" },
+  { "id": "api-04", "kind": "positive", "template": "api", "task": "Добавить REST ручку /api/products" },
+  { "id": "api-05", "kind": "positive", "template": "api", "task": "Реализовать /api/tasks" },
+
+  { "id": "plain-01", "kind": "negative", "template": "plain", "task": "Сделать что-то полезное" },
+  { "id": "plain-02", "kind": "negative", "template": "plain", "task": "Улучшить проект" },
+  { "id": "plain-03", "kind": "negative", "template": "plain", "task": "Починить баг" },
+  { "id": "plain-04", "kind": "negative", "template": "plain", "task": "Навести порядок в коде" },
+  { "id": "plain-05", "kind": "negative", "template": "plain", "task": "Обновить зависимости" }
+]

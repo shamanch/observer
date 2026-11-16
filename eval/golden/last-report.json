@@ -1,0 +1,1768 @@
+{
+  "generatedAt": "2026-11-16T04:45:26.872Z",
+  "note": "broken — приложение без фичи; fixed — с фичей. false-green означает, что witness сказал «прошло» на broken.",
+  "thresholds": {
+    "falseGreen": 0,
+    "negativeGreen": 0,
+    "positiveFail": 0
+  },
+  "metrics": {
+    "cases": 20,
+    "measured": 20,
+    "positive": 13,
+    "negative": 7,
+    "falseGreen": 0,
+    "falseGreenRate": 0,
+    "negativeGreen": 0,
+    "negativeGreenRate": 0,
+    "positiveFail": 0,
+    "positivePassRate": 1,
+    "tautologies": 10,
+    "machineCriteria": 40,
+    "totalCriteria": 70,
+    "machineShare": 0.5714285714285714,
+    "errors": 0
+  },
+  "cases": [
+    {
+      "id": "csv-01",
+      "kind": "positive",
+      "template": "csv",
+      "task": "Добавить экспорт отчёта в CSV на странице /api/export",
+      "claimId": "2026-11-16-dobavit-eksport-otcheta-v-csv-na-stranice-api-ex",
+      "broken": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-dobavit-eksport-otcheta-v-csv-na-stranice-api-ex",
+        "passed": 1,
+        "failed": 2,
+        "skipped": 1,
+        "total": 4,
+        "criteria": [
+          {
+            "id": "marshrut-api-export-otvechaet-200",
+            "status": "pass",
+            "text": "Маршрут /api/export отвечает 200",
+            "detail": "статус 200",
+            "manual": false
+          },
+          {
+            "id": "otvet-api-export-otdaet-csv-zagolovok-content-ty",
+            "status": "fail",
+            "text": "Ответ /api/export отдаёт CSV: заголовок Content-Type и первая строка с разделителем",
+            "detail": "заголовок content-type: ждали «text/csv», получили «text/plain; charset=utf-8»; в теле нет «,»",
+            "manual": false
+          },
+          {
+            "id": "eksport-soderzhit-stroku-zagolovkov-i-hotya-by-o",
+            "status": "fail",
+            "text": "Экспорт содержит строку заголовков и хотя бы одну строку отчёт",
+            "detail": "в теле нет «,»; ждали минимум 2 непустых строк, получили 1",
+            "manual": false
+          },
+          {
+            "id": "v-interfeyse-est-knopka-eksporta-i-ona-skachivae",
+            "status": "skip",
+            "text": "В интерфейсе есть кнопка экспорта, и она скачивает файл",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "fixed": {
+        "exit": 0,
+        "green": true,
+        "claimId": "2026-11-16-dobavit-eksport-otcheta-v-csv-na-stranice-api-ex",
+        "passed": 3,
+        "failed": 0,
+        "skipped": 1,
+        "total": 4,
+        "criteria": [
+          {
+            "id": "marshrut-api-export-otvechaet-200",
+            "status": "pass",
+            "text": "Маршрут /api/export отвечает 200",
+            "detail": "статус 200",
+            "manual": false
+          },
+          {
+            "id": "otvet-api-export-otdaet-csv-zagolovok-content-ty",
+            "status": "pass",
+            "text": "Ответ /api/export отдаёт CSV: заголовок Content-Type и первая строка с разделителем",
+            "detail": "заголовок content-type, тело содержит «,»",
+            "manual": false
+          },
+          {
+            "id": "eksport-soderzhit-stroku-zagolovkov-i-hotya-by-o",
+            "status": "pass",
+            "text": "Экспорт содержит строку заголовков и хотя бы одну строку отчёт",
+            "detail": "тело содержит «,», непустых строк: 3",
+            "manual": false
+          },
+          {
+            "id": "v-interfeyse-est-knopka-eksporta-i-ona-skachivae",
+            "status": "skip",
+            "text": "В интерфейсе есть кнопка экспорта, и она скачивает файл",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [
+          "marshrut-api-export-otvechaet-200"
+        ],
+        "regressions": []
+      },
+      "machine": 3,
+      "total": 4,
+      "verdict": "ok",
+      "errors": []
+    },
+    {
+      "id": "csv-02",
+      "kind": "positive",
+      "template": "csv",
+      "task": "Сделать выгрузку заказов в csv на /api/orders/export",
+      "claimId": "2026-11-16-sdelat-vygruzku-zakazov-v-csv-na-api-orders-expo",
+      "broken": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-sdelat-vygruzku-zakazov-v-csv-na-api-orders-expo",
+        "passed": 1,
+        "failed": 2,
+        "skipped": 1,
+        "total": 4,
+        "criteria": [
+          {
+            "id": "marshrut-api-orders-export-otvechaet-200",
+            "status": "pass",
+            "text": "Маршрут /api/orders/export отвечает 200",
+            "detail": "статус 200",
+            "manual": false
+          },
+          {
+            "id": "otvet-api-orders-export-otdaet-csv-zagolovok-con",
+            "status": "fail",
+            "text": "Ответ /api/orders/export отдаёт CSV: заголовок Content-Type и первая строка с разделителем",
+            "detail": "заголовок content-type: ждали «text/csv», получили «text/plain; charset=utf-8»; в теле нет «,»",
+            "manual": false
+          },
+          {
+            "id": "eksport-soderzhit-stroku-zagolovkov-i-hotya-by-o",
+            "status": "fail",
+            "text": "Экспорт содержит строку заголовков и хотя бы одну строку заказ",
+            "detail": "в теле нет «,»; ждали минимум 2 непустых строк, получили 1",
+            "manual": false
+          },
+          {
+            "id": "v-interfeyse-est-knopka-eksporta-i-ona-skachivae",
+            "status": "skip",
+            "text": "В интерфейсе есть кнопка экспорта, и она скачивает файл",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "fixed": {
+        "exit": 0,
+        "green": true,
+        "claimId": "2026-11-16-sdelat-vygruzku-zakazov-v-csv-na-api-orders-expo",
+        "passed": 3,
+        "failed": 0,
+        "skipped": 1,
+        "total": 4,
+        "criteria": [
+          {
+            "id": "marshrut-api-orders-export-otvechaet-200",
+            "status": "pass",
+            "text": "Маршрут /api/orders/export отвечает 200",
+            "detail": "статус 200",
+            "manual": false
+          },
+          {
+            "id": "otvet-api-orders-export-otdaet-csv-zagolovok-con",
+            "status": "pass",
+            "text": "Ответ /api/orders/export отдаёт CSV: заголовок Content-Type и первая строка с разделителем",
+            "detail": "заголовок content-type, тело содержит «,»",
+            "manual": false
+          },
+          {
+            "id": "eksport-soderzhit-stroku-zagolovkov-i-hotya-by-o",
+            "status": "pass",
+            "text": "Экспорт содержит строку заголовков и хотя бы одну строку заказ",
+            "detail": "тело содержит «,», непустых строк: 3",
+            "manual": false
+          },
+          {
+            "id": "v-interfeyse-est-knopka-eksporta-i-ona-skachivae",
+            "status": "skip",
+            "text": "В интерфейсе есть кнопка экспорта, и она скачивает файл",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [
+          "marshrut-api-orders-export-otvechaet-200"
+        ],
+        "regressions": []
+      },
+      "machine": 3,
+      "total": 4,
+      "verdict": "ok",
+      "errors": []
+    },
+    {
+      "id": "csv-03",
+      "kind": "positive",
+      "template": "csv",
+      "task": "Добавить скачивание отчёта на /api/download",
+      "claimId": "2026-11-16-dobavit-skachivanie-otcheta-na-api-download",
+      "broken": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-dobavit-skachivanie-otcheta-na-api-download",
+        "passed": 1,
+        "failed": 2,
+        "skipped": 1,
+        "total": 4,
+        "criteria": [
+          {
+            "id": "marshrut-api-download-otvechaet-200",
+            "status": "pass",
+            "text": "Маршрут /api/download отвечает 200",
+            "detail": "статус 200",
+            "manual": false
+          },
+          {
+            "id": "otvet-api-download-otdaet-csv-zagolovok-content",
+            "status": "fail",
+            "text": "Ответ /api/download отдаёт CSV: заголовок Content-Type и первая строка с разделителем",
+            "detail": "заголовок content-type: ждали «text/csv», получили «text/plain; charset=utf-8»; в теле нет «,»",
+            "manual": false
+          },
+          {
+            "id": "eksport-soderzhit-stroku-zagolovkov-i-hotya-by-o",
+            "status": "fail",
+            "text": "Экспорт содержит строку заголовков и хотя бы одну строку отчёт",
+            "detail": "в теле нет «,»; ждали минимум 2 непустых строк, получили 1",
+            "manual": false
+          },
+          {
+            "id": "v-interfeyse-est-knopka-eksporta-i-ona-skachivae",
+            "status": "skip",
+            "text": "В интерфейсе есть кнопка экспорта, и она скачивает файл",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "fixed": {
+        "exit": 0,
+        "green": true,
+        "claimId": "2026-11-16-dobavit-skachivanie-otcheta-na-api-download",
+        "passed": 3,
+        "failed": 0,
+        "skipped": 1,
+        "total": 4,
+        "criteria": [
+          {
+            "id": "marshrut-api-download-otvechaet-200",
+            "status": "pass",
+            "text": "Маршрут /api/download отвечает 200",
+            "detail": "статус 200",
+            "manual": false
+          },
+          {
+            "id": "otvet-api-download-otdaet-csv-zagolovok-content",
+            "status": "pass",
+            "text": "Ответ /api/download отдаёт CSV: заголовок Content-Type и первая строка с разделителем",
+            "detail": "заголовок content-type, тело содержит «,»",
+            "manual": false
+          },
+          {
+            "id": "eksport-soderzhit-stroku-zagolovkov-i-hotya-by-o",
+            "status": "pass",
+            "text": "Экспорт содержит строку заголовков и хотя бы одну строку отчёт",
+            "detail": "тело содержит «,», непустых строк: 3",
+            "manual": false
+          },
+          {
+            "id": "v-interfeyse-est-knopka-eksporta-i-ona-skachivae",
+            "status": "skip",
+            "text": "В интерфейсе есть кнопка экспорта, и она скачивает файл",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [
+          "marshrut-api-download-otvechaet-200"
+        ],
+        "regressions": []
+      },
+      "machine": 3,
+      "total": 4,
+      "verdict": "ok",
+      "errors": []
+    },
+    {
+      "id": "csv-04",
+      "kind": "positive",
+      "template": "csv",
+      "task": "Реализовать export клиентов в CSV по адресу /api/clients/csv",
+      "claimId": "2026-11-16-realizovat-export-klientov-v-csv-po-adresu-api-c",
+      "broken": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-realizovat-export-klientov-v-csv-po-adresu-api-c",
+        "passed": 1,
+        "failed": 2,
+        "skipped": 1,
+        "total": 4,
+        "criteria": [
+          {
+            "id": "marshrut-api-clients-csv-otvechaet-200",
+            "status": "pass",
+            "text": "Маршрут /api/clients/csv отвечает 200",
+            "detail": "статус 200",
+            "manual": false
+          },
+          {
+            "id": "otvet-api-clients-csv-otdaet-csv-zagolovok-conte",
+            "status": "fail",
+            "text": "Ответ /api/clients/csv отдаёт CSV: заголовок Content-Type и первая строка с разделителем",
+            "detail": "заголовок content-type: ждали «text/csv», получили «text/plain; charset=utf-8»; в теле нет «,»",
+            "manual": false
+          },
+          {
+            "id": "eksport-soderzhit-stroku-zagolovkov-i-hotya-by-o",
+            "status": "fail",
+            "text": "Экспорт содержит строку заголовков и хотя бы одну строку данные",
+            "detail": "в теле нет «,»; ждали минимум 2 непустых строк, получили 1",
+            "manual": false
+          },
+          {
+            "id": "v-interfeyse-est-knopka-eksporta-i-ona-skachivae",
+            "status": "skip",
+            "text": "В интерфейсе есть кнопка экспорта, и она скачивает файл",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "fixed": {
+        "exit": 0,
+        "green": true,
+        "claimId": "2026-11-16-realizovat-export-klientov-v-csv-po-adresu-api-c",
+        "passed": 3,
+        "failed": 0,
+        "skipped": 1,
+        "total": 4,
+        "criteria": [
+          {
+            "id": "marshrut-api-clients-csv-otvechaet-200",
+            "status": "pass",
+            "text": "Маршрут /api/clients/csv отвечает 200",
+            "detail": "статус 200",
+            "manual": false
+          },
+          {
+            "id": "otvet-api-clients-csv-otdaet-csv-zagolovok-conte",
+            "status": "pass",
+            "text": "Ответ /api/clients/csv отдаёт CSV: заголовок Content-Type и первая строка с разделителем",
+            "detail": "заголовок content-type, тело содержит «,»",
+            "manual": false
+          },
+          {
+            "id": "eksport-soderzhit-stroku-zagolovkov-i-hotya-by-o",
+            "status": "pass",
+            "text": "Экспорт содержит строку заголовков и хотя бы одну строку данные",
+            "detail": "тело содержит «,», непустых строк: 3",
+            "manual": false
+          },
+          {
+            "id": "v-interfeyse-est-knopka-eksporta-i-ona-skachivae",
+            "status": "skip",
+            "text": "В интерфейсе есть кнопка экспорта, и она скачивает файл",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [
+          "marshrut-api-clients-csv-otvechaet-200"
+        ],
+        "regressions": []
+      },
+      "machine": 3,
+      "total": 4,
+      "verdict": "ok",
+      "errors": []
+    },
+    {
+      "id": "csv-05",
+      "kind": "positive",
+      "template": "csv",
+      "task": "Отдавать csv через /export/report.csv",
+      "claimId": "2026-11-16-otdavat-csv-cherez-export-report-csv",
+      "broken": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-otdavat-csv-cherez-export-report-csv",
+        "passed": 1,
+        "failed": 2,
+        "skipped": 1,
+        "total": 4,
+        "criteria": [
+          {
+            "id": "marshrut-export-report-csv-otvechaet-200",
+            "status": "pass",
+            "text": "Маршрут /export/report.csv отвечает 200",
+            "detail": "статус 200",
+            "manual": false
+          },
+          {
+            "id": "otvet-export-report-csv-otdaet-csv-zagolovok-con",
+            "status": "fail",
+            "text": "Ответ /export/report.csv отдаёт CSV: заголовок Content-Type и первая строка с разделителем",
+            "detail": "заголовок content-type: ждали «text/csv», получили «text/plain; charset=utf-8»; в теле нет «,»",
+            "manual": false
+          },
+          {
+            "id": "eksport-soderzhit-stroku-zagolovkov-i-hotya-by-o",
+            "status": "fail",
+            "text": "Экспорт содержит строку заголовков и хотя бы одну строку report",
+            "detail": "в теле нет «,»; ждали минимум 2 непустых строк, получили 1",
+            "manual": false
+          },
+          {
+            "id": "v-interfeyse-est-knopka-eksporta-i-ona-skachivae",
+            "status": "skip",
+            "text": "В интерфейсе есть кнопка экспорта, и она скачивает файл",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "fixed": {
+        "exit": 0,
+        "green": true,
+        "claimId": "2026-11-16-otdavat-csv-cherez-export-report-csv",
+        "passed": 3,
+        "failed": 0,
+        "skipped": 1,
+        "total": 4,
+        "criteria": [
+          {
+            "id": "marshrut-export-report-csv-otvechaet-200",
+            "status": "pass",
+            "text": "Маршрут /export/report.csv отвечает 200",
+            "detail": "статус 200",
+            "manual": false
+          },
+          {
+            "id": "otvet-export-report-csv-otdaet-csv-zagolovok-con",
+            "status": "pass",
+            "text": "Ответ /export/report.csv отдаёт CSV: заголовок Content-Type и первая строка с разделителем",
+            "detail": "заголовок content-type, тело содержит «,»",
+            "manual": false
+          },
+          {
+            "id": "eksport-soderzhit-stroku-zagolovkov-i-hotya-by-o",
+            "status": "pass",
+            "text": "Экспорт содержит строку заголовков и хотя бы одну строку report",
+            "detail": "тело содержит «,», непустых строк: 3",
+            "manual": false
+          },
+          {
+            "id": "v-interfeyse-est-knopka-eksporta-i-ona-skachivae",
+            "status": "skip",
+            "text": "В интерфейсе есть кнопка экспорта, и она скачивает файл",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [
+          "marshrut-export-report-csv-otvechaet-200"
+        ],
+        "regressions": []
+      },
+      "machine": 3,
+      "total": 4,
+      "verdict": "ok",
+      "errors": []
+    },
+    {
+      "id": "login-01",
+      "kind": "positive",
+      "template": "login",
+      "task": "Добавить логин через email и пароль",
+      "claimId": "2026-11-16-dobavit-login-cherez-email-i-parol",
+      "broken": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-dobavit-login-cherez-email-i-parol",
+        "passed": 0,
+        "failed": 3,
+        "skipped": 1,
+        "total": 4,
+        "criteria": [
+          {
+            "id": "marshrut-api-login-otvechaet-200",
+            "status": "fail",
+            "text": "Маршрут /api/login отвечает 200",
+            "detail": "ждали статус 200, получили 500",
+            "manual": false
+          },
+          {
+            "id": "nevernye-uchetnye-dannye-dayut-401-a-ne-500-i-ne",
+            "status": "fail",
+            "text": "Неверные учётные данные дают 401, а не 500 и не 200",
+            "detail": "ждали статус 401, получили 500",
+            "manual": false
+          },
+          {
+            "id": "vernye-uchetnye-dannye-dayut-token-ili-sessiyu",
+            "status": "fail",
+            "text": "Верные учётные данные дают токен или сессию",
+            "detail": "ждали статус 200, получили 500",
+            "manual": false
+          },
+          {
+            "id": "posle-vhoda-zakrytaya-stranica-dostupna-a-bez-se",
+            "status": "skip",
+            "text": "После входа закрытая страница доступна, а без сессии — нет",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "fixed": {
+        "exit": 0,
+        "green": true,
+        "claimId": "2026-11-16-dobavit-login-cherez-email-i-parol",
+        "passed": 3,
+        "failed": 0,
+        "skipped": 1,
+        "total": 4,
+        "criteria": [
+          {
+            "id": "marshrut-api-login-otvechaet-200",
+            "status": "pass",
+            "text": "Маршрут /api/login отвечает 200",
+            "detail": "статус 200",
+            "manual": false
+          },
+          {
+            "id": "nevernye-uchetnye-dannye-dayut-401-a-ne-500-i-ne",
+            "status": "pass",
+            "text": "Неверные учётные данные дают 401, а не 500 и не 200",
+            "detail": "статус 401",
+            "manual": false
+          },
+          {
+            "id": "vernye-uchetnye-dannye-dayut-token-ili-sessiyu",
+            "status": "pass",
+            "text": "Верные учётные данные дают токен или сессию",
+            "detail": "статус 200",
+            "manual": false
+          },
+          {
+            "id": "posle-vhoda-zakrytaya-stranica-dostupna-a-bez-se",
+            "status": "skip",
+            "text": "После входа закрытая страница доступна, а без сессии — нет",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "machine": 3,
+      "total": 4,
+      "verdict": "ok",
+      "errors": []
+    },
+    {
+      "id": "login-02",
+      "kind": "positive",
+      "template": "login",
+      "task": "Починить авторизацию на /login",
+      "claimId": "2026-11-16-pochinit-avtorizaciyu-na-login",
+      "broken": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-pochinit-avtorizaciyu-na-login",
+        "passed": 0,
+        "failed": 3,
+        "skipped": 1,
+        "total": 4,
+        "criteria": [
+          {
+            "id": "marshrut-login-otvechaet-200",
+            "status": "fail",
+            "text": "Маршрут /login отвечает 200",
+            "detail": "ждали статус 200, получили 500",
+            "manual": false
+          },
+          {
+            "id": "nevernye-uchetnye-dannye-dayut-401-a-ne-500-i-ne",
+            "status": "fail",
+            "text": "Неверные учётные данные дают 401, а не 500 и не 200",
+            "detail": "ждали статус 401, получили 500",
+            "manual": false
+          },
+          {
+            "id": "vernye-uchetnye-dannye-dayut-token-ili-sessiyu",
+            "status": "fail",
+            "text": "Верные учётные данные дают токен или сессию",
+            "detail": "ждали статус 200, получили 500",
+            "manual": false
+          },
+          {
+            "id": "posle-vhoda-zakrytaya-stranica-dostupna-a-bez-se",
+            "status": "skip",
+            "text": "После входа закрытая страница доступна, а без сессии — нет",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "fixed": {
+        "exit": 0,
+        "green": true,
+        "claimId": "2026-11-16-pochinit-avtorizaciyu-na-login",
+        "passed": 3,
+        "failed": 0,
+        "skipped": 1,
+        "total": 4,
+        "criteria": [
+          {
+            "id": "marshrut-login-otvechaet-200",
+            "status": "pass",
+            "text": "Маршрут /login отвечает 200",
+            "detail": "статус 200",
+            "manual": false
+          },
+          {
+            "id": "nevernye-uchetnye-dannye-dayut-401-a-ne-500-i-ne",
+            "status": "pass",
+            "text": "Неверные учётные данные дают 401, а не 500 и не 200",
+            "detail": "статус 401",
+            "manual": false
+          },
+          {
+            "id": "vernye-uchetnye-dannye-dayut-token-ili-sessiyu",
+            "status": "pass",
+            "text": "Верные учётные данные дают токен или сессию",
+            "detail": "статус 200",
+            "manual": false
+          },
+          {
+            "id": "posle-vhoda-zakrytaya-stranica-dostupna-a-bez-se",
+            "status": "skip",
+            "text": "После входа закрытая страница доступна, а без сессии — нет",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "machine": 3,
+      "total": 4,
+      "verdict": "ok",
+      "errors": []
+    },
+    {
+      "id": "login-03",
+      "kind": "positive",
+      "template": "login",
+      "task": "Добавить вход по паролю на /auth/signin",
+      "claimId": "2026-11-16-dobavit-vhod-po-parolyu-na-auth-signin",
+      "broken": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-dobavit-vhod-po-parolyu-na-auth-signin",
+        "passed": 0,
+        "failed": 3,
+        "skipped": 1,
+        "total": 4,
+        "criteria": [
+          {
+            "id": "marshrut-auth-signin-otvechaet-200",
+            "status": "fail",
+            "text": "Маршрут /auth/signin отвечает 200",
+            "detail": "ждали статус 200, получили 500",
+            "manual": false
+          },
+          {
+            "id": "nevernye-uchetnye-dannye-dayut-401-a-ne-500-i-ne",
+            "status": "fail",
+            "text": "Неверные учётные данные дают 401, а не 500 и не 200",
+            "detail": "ждали статус 401, получили 500",
+            "manual": false
+          },
+          {
+            "id": "vernye-uchetnye-dannye-dayut-token-ili-sessiyu",
+            "status": "fail",
+            "text": "Верные учётные данные дают токен или сессию",
+            "detail": "ждали статус 200, получили 500",
+            "manual": false
+          },
+          {
+            "id": "posle-vhoda-zakrytaya-stranica-dostupna-a-bez-se",
+            "status": "skip",
+            "text": "После входа закрытая страница доступна, а без сессии — нет",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "fixed": {
+        "exit": 0,
+        "green": true,
+        "claimId": "2026-11-16-dobavit-vhod-po-parolyu-na-auth-signin",
+        "passed": 3,
+        "failed": 0,
+        "skipped": 1,
+        "total": 4,
+        "criteria": [
+          {
+            "id": "marshrut-auth-signin-otvechaet-200",
+            "status": "pass",
+            "text": "Маршрут /auth/signin отвечает 200",
+            "detail": "статус 200",
+            "manual": false
+          },
+          {
+            "id": "nevernye-uchetnye-dannye-dayut-401-a-ne-500-i-ne",
+            "status": "pass",
+            "text": "Неверные учётные данные дают 401, а не 500 и не 200",
+            "detail": "статус 401",
+            "manual": false
+          },
+          {
+            "id": "vernye-uchetnye-dannye-dayut-token-ili-sessiyu",
+            "status": "pass",
+            "text": "Верные учётные данные дают токен или сессию",
+            "detail": "статус 200",
+            "manual": false
+          },
+          {
+            "id": "posle-vhoda-zakrytaya-stranica-dostupna-a-bez-se",
+            "status": "skip",
+            "text": "После входа закрытая страница доступна, а без сессии — нет",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "machine": 3,
+      "total": 4,
+      "verdict": "ok",
+      "errors": []
+    },
+    {
+      "id": "login-04",
+      "kind": "negative",
+      "template": "login",
+      "task": "Сделать login на /api/session",
+      "claimId": "2026-11-16-sdelat-login-na-api-session",
+      "broken": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-sdelat-login-na-api-session",
+        "passed": 0,
+        "failed": 3,
+        "skipped": 1,
+        "total": 4,
+        "criteria": [
+          {
+            "id": "marshrut-api-session-otvechaet-200",
+            "status": "fail",
+            "text": "Маршрут /api/session отвечает 200",
+            "detail": "ждали статус 200, получили 404",
+            "manual": false
+          },
+          {
+            "id": "nevernye-uchetnye-dannye-dayut-401-a-ne-500-i-ne",
+            "status": "fail",
+            "text": "Неверные учётные данные дают 401, а не 500 и не 200",
+            "detail": "ждали статус 401, получили 404",
+            "manual": false
+          },
+          {
+            "id": "vernye-uchetnye-dannye-dayut-token-ili-sessiyu",
+            "status": "fail",
+            "text": "Верные учётные данные дают токен или сессию",
+            "detail": "ждали статус 200, получили 404",
+            "manual": false
+          },
+          {
+            "id": "posle-vhoda-zakrytaya-stranica-dostupna-a-bez-se",
+            "status": "skip",
+            "text": "После входа закрытая страница доступна, а без сессии — нет",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "fixed": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-sdelat-login-na-api-session",
+        "passed": 0,
+        "failed": 3,
+        "skipped": 1,
+        "total": 4,
+        "criteria": [
+          {
+            "id": "marshrut-api-session-otvechaet-200",
+            "status": "fail",
+            "text": "Маршрут /api/session отвечает 200",
+            "detail": "ждали статус 200, получили 404",
+            "manual": false
+          },
+          {
+            "id": "nevernye-uchetnye-dannye-dayut-401-a-ne-500-i-ne",
+            "status": "fail",
+            "text": "Неверные учётные данные дают 401, а не 500 и не 200",
+            "detail": "ждали статус 401, получили 404",
+            "manual": false
+          },
+          {
+            "id": "vernye-uchetnye-dannye-dayut-token-ili-sessiyu",
+            "status": "fail",
+            "text": "Верные учётные данные дают токен или сессию",
+            "detail": "ждали статус 200, получили 404",
+            "manual": false
+          },
+          {
+            "id": "posle-vhoda-zakrytaya-stranica-dostupna-a-bez-se",
+            "status": "skip",
+            "text": "После входа закрытая страница доступна, а без сессии — нет",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "machine": 3,
+      "total": 4,
+      "verdict": "ok",
+      "errors": []
+    },
+    {
+      "id": "login-05",
+      "kind": "negative",
+      "template": "login",
+      "task": "Реализовать авторизацию через /signin",
+      "claimId": "2026-11-16-realizovat-avtorizaciyu-cherez-signin",
+      "broken": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-realizovat-avtorizaciyu-cherez-signin",
+        "passed": 0,
+        "failed": 3,
+        "skipped": 1,
+        "total": 4,
+        "criteria": [
+          {
+            "id": "marshrut-signin-otvechaet-200",
+            "status": "fail",
+            "text": "Маршрут /signin отвечает 200",
+            "detail": "ждали статус 200, получили 404",
+            "manual": false
+          },
+          {
+            "id": "nevernye-uchetnye-dannye-dayut-401-a-ne-500-i-ne",
+            "status": "fail",
+            "text": "Неверные учётные данные дают 401, а не 500 и не 200",
+            "detail": "ждали статус 401, получили 404",
+            "manual": false
+          },
+          {
+            "id": "vernye-uchetnye-dannye-dayut-token-ili-sessiyu",
+            "status": "fail",
+            "text": "Верные учётные данные дают токен или сессию",
+            "detail": "ждали статус 200, получили 404",
+            "manual": false
+          },
+          {
+            "id": "posle-vhoda-zakrytaya-stranica-dostupna-a-bez-se",
+            "status": "skip",
+            "text": "После входа закрытая страница доступна, а без сессии — нет",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "fixed": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-realizovat-avtorizaciyu-cherez-signin",
+        "passed": 0,
+        "failed": 3,
+        "skipped": 1,
+        "total": 4,
+        "criteria": [
+          {
+            "id": "marshrut-signin-otvechaet-200",
+            "status": "fail",
+            "text": "Маршрут /signin отвечает 200",
+            "detail": "ждали статус 200, получили 404",
+            "manual": false
+          },
+          {
+            "id": "nevernye-uchetnye-dannye-dayut-401-a-ne-500-i-ne",
+            "status": "fail",
+            "text": "Неверные учётные данные дают 401, а не 500 и не 200",
+            "detail": "ждали статус 401, получили 404",
+            "manual": false
+          },
+          {
+            "id": "vernye-uchetnye-dannye-dayut-token-ili-sessiyu",
+            "status": "fail",
+            "text": "Верные учётные данные дают токен или сессию",
+            "detail": "ждали статус 200, получили 404",
+            "manual": false
+          },
+          {
+            "id": "posle-vhoda-zakrytaya-stranica-dostupna-a-bez-se",
+            "status": "skip",
+            "text": "После входа закрытая страница доступна, а без сессии — нет",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "machine": 3,
+      "total": 4,
+      "verdict": "ok",
+      "errors": []
+    },
+    {
+      "id": "api-01",
+      "kind": "positive",
+      "template": "api",
+      "task": "Создать API /api/orders со списком заказов",
+      "claimId": "2026-11-16-sozdat-api-api-orders-so-spiskom-zakazov",
+      "broken": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-sozdat-api-api-orders-so-spiskom-zakazov",
+        "passed": 1,
+        "failed": 1,
+        "skipped": 1,
+        "total": 3,
+        "criteria": [
+          {
+            "id": "marshrut-api-orders-otvechaet-200-i-tipom-applic",
+            "status": "pass",
+            "text": "Маршрут /api/orders отвечает 200 и типом application/json",
+            "detail": "статус 200, заголовок content-type",
+            "manual": false
+          },
+          {
+            "id": "otvet-api-orders-soderzhit-nepustoy-spisok-danny",
+            "status": "fail",
+            "text": "Ответ /api/orders содержит непустой список данных",
+            "detail": "JSON не содержит непустого списка (пустой массив или массива нет)",
+            "manual": false
+          },
+          {
+            "id": "dannye-iz-otveta-deystvitelno-otobrazhayutsya-v",
+            "status": "skip",
+            "text": "Данные из ответа действительно отображаются в интерфейсе",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "fixed": {
+        "exit": 0,
+        "green": true,
+        "claimId": "2026-11-16-sozdat-api-api-orders-so-spiskom-zakazov",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 1,
+        "total": 3,
+        "criteria": [
+          {
+            "id": "marshrut-api-orders-otvechaet-200-i-tipom-applic",
+            "status": "pass",
+            "text": "Маршрут /api/orders отвечает 200 и типом application/json",
+            "detail": "статус 200, заголовок content-type",
+            "manual": false
+          },
+          {
+            "id": "otvet-api-orders-soderzhit-nepustoy-spisok-danny",
+            "status": "pass",
+            "text": "Ответ /api/orders содержит непустой список данных",
+            "detail": "JSON содержит непустой список",
+            "manual": false
+          },
+          {
+            "id": "dannye-iz-otveta-deystvitelno-otobrazhayutsya-v",
+            "status": "skip",
+            "text": "Данные из ответа действительно отображаются в интерфейсе",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [
+          "marshrut-api-orders-otvechaet-200-i-tipom-applic"
+        ],
+        "regressions": []
+      },
+      "machine": 2,
+      "total": 3,
+      "verdict": "ok",
+      "errors": []
+    },
+    {
+      "id": "api-02",
+      "kind": "positive",
+      "template": "api",
+      "task": "Отдавать JSON на /api/items",
+      "claimId": "2026-11-16-otdavat-json-na-api-items",
+      "broken": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-otdavat-json-na-api-items",
+        "passed": 1,
+        "failed": 1,
+        "skipped": 1,
+        "total": 3,
+        "criteria": [
+          {
+            "id": "marshrut-api-items-otvechaet-200-i-tipom-applica",
+            "status": "pass",
+            "text": "Маршрут /api/items отвечает 200 и типом application/json",
+            "detail": "статус 200, заголовок content-type",
+            "manual": false
+          },
+          {
+            "id": "otvet-api-items-soderzhit-nepustoy-spisok-dannyh",
+            "status": "fail",
+            "text": "Ответ /api/items содержит непустой список данных",
+            "detail": "JSON не содержит непустого списка (пустой массив или массива нет)",
+            "manual": false
+          },
+          {
+            "id": "dannye-iz-otveta-deystvitelno-otobrazhayutsya-v",
+            "status": "skip",
+            "text": "Данные из ответа действительно отображаются в интерфейсе",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "fixed": {
+        "exit": 0,
+        "green": true,
+        "claimId": "2026-11-16-otdavat-json-na-api-items",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 1,
+        "total": 3,
+        "criteria": [
+          {
+            "id": "marshrut-api-items-otvechaet-200-i-tipom-applica",
+            "status": "pass",
+            "text": "Маршрут /api/items отвечает 200 и типом application/json",
+            "detail": "статус 200, заголовок content-type",
+            "manual": false
+          },
+          {
+            "id": "otvet-api-items-soderzhit-nepustoy-spisok-dannyh",
+            "status": "pass",
+            "text": "Ответ /api/items содержит непустой список данных",
+            "detail": "JSON содержит непустой список",
+            "manual": false
+          },
+          {
+            "id": "dannye-iz-otveta-deystvitelno-otobrazhayutsya-v",
+            "status": "skip",
+            "text": "Данные из ответа действительно отображаются в интерфейсе",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [
+          "marshrut-api-items-otvechaet-200-i-tipom-applica"
+        ],
+        "regressions": []
+      },
+      "machine": 2,
+      "total": 3,
+      "verdict": "ok",
+      "errors": []
+    },
+    {
+      "id": "api-03",
+      "kind": "positive",
+      "template": "api",
+      "task": "Сделать endpoint /api/users",
+      "claimId": "2026-11-16-sdelat-endpoint-api-users",
+      "broken": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-sdelat-endpoint-api-users",
+        "passed": 1,
+        "failed": 1,
+        "skipped": 1,
+        "total": 3,
+        "criteria": [
+          {
+            "id": "marshrut-api-users-otvechaet-200-i-tipom-applica",
+            "status": "pass",
+            "text": "Маршрут /api/users отвечает 200 и типом application/json",
+            "detail": "статус 200, заголовок content-type",
+            "manual": false
+          },
+          {
+            "id": "otvet-api-users-soderzhit-nepustoy-spisok-dannyh",
+            "status": "fail",
+            "text": "Ответ /api/users содержит непустой список данных",
+            "detail": "JSON не содержит непустого списка (пустой массив или массива нет)",
+            "manual": false
+          },
+          {
+            "id": "dannye-iz-otveta-deystvitelno-otobrazhayutsya-v",
+            "status": "skip",
+            "text": "Данные из ответа действительно отображаются в интерфейсе",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "fixed": {
+        "exit": 0,
+        "green": true,
+        "claimId": "2026-11-16-sdelat-endpoint-api-users",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 1,
+        "total": 3,
+        "criteria": [
+          {
+            "id": "marshrut-api-users-otvechaet-200-i-tipom-applica",
+            "status": "pass",
+            "text": "Маршрут /api/users отвечает 200 и типом application/json",
+            "detail": "статус 200, заголовок content-type",
+            "manual": false
+          },
+          {
+            "id": "otvet-api-users-soderzhit-nepustoy-spisok-dannyh",
+            "status": "pass",
+            "text": "Ответ /api/users содержит непустой список данных",
+            "detail": "JSON содержит непустой список",
+            "manual": false
+          },
+          {
+            "id": "dannye-iz-otveta-deystvitelno-otobrazhayutsya-v",
+            "status": "skip",
+            "text": "Данные из ответа действительно отображаются в интерфейсе",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [
+          "marshrut-api-users-otvechaet-200-i-tipom-applica"
+        ],
+        "regressions": []
+      },
+      "machine": 2,
+      "total": 3,
+      "verdict": "ok",
+      "errors": []
+    },
+    {
+      "id": "api-04",
+      "kind": "positive",
+      "template": "api",
+      "task": "Добавить REST ручку /api/products",
+      "claimId": "2026-11-16-dobavit-rest-ruchku-api-products",
+      "broken": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-dobavit-rest-ruchku-api-products",
+        "passed": 1,
+        "failed": 1,
+        "skipped": 1,
+        "total": 3,
+        "criteria": [
+          {
+            "id": "marshrut-api-products-otvechaet-200-i-tipom-appl",
+            "status": "pass",
+            "text": "Маршрут /api/products отвечает 200 и типом application/json",
+            "detail": "статус 200, заголовок content-type",
+            "manual": false
+          },
+          {
+            "id": "otvet-api-products-soderzhit-nepustoy-spisok-dan",
+            "status": "fail",
+            "text": "Ответ /api/products содержит непустой список данных",
+            "detail": "JSON не содержит непустого списка (пустой массив или массива нет)",
+            "manual": false
+          },
+          {
+            "id": "dannye-iz-otveta-deystvitelno-otobrazhayutsya-v",
+            "status": "skip",
+            "text": "Данные из ответа действительно отображаются в интерфейсе",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "fixed": {
+        "exit": 0,
+        "green": true,
+        "claimId": "2026-11-16-dobavit-rest-ruchku-api-products",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 1,
+        "total": 3,
+        "criteria": [
+          {
+            "id": "marshrut-api-products-otvechaet-200-i-tipom-appl",
+            "status": "pass",
+            "text": "Маршрут /api/products отвечает 200 и типом application/json",
+            "detail": "статус 200, заголовок content-type",
+            "manual": false
+          },
+          {
+            "id": "otvet-api-products-soderzhit-nepustoy-spisok-dan",
+            "status": "pass",
+            "text": "Ответ /api/products содержит непустой список данных",
+            "detail": "JSON содержит непустой список",
+            "manual": false
+          },
+          {
+            "id": "dannye-iz-otveta-deystvitelno-otobrazhayutsya-v",
+            "status": "skip",
+            "text": "Данные из ответа действительно отображаются в интерфейсе",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [
+          "marshrut-api-products-otvechaet-200-i-tipom-appl"
+        ],
+        "regressions": []
+      },
+      "machine": 2,
+      "total": 3,
+      "verdict": "ok",
+      "errors": []
+    },
+    {
+      "id": "api-05",
+      "kind": "positive",
+      "template": "api",
+      "task": "Реализовать /api/tasks",
+      "claimId": "2026-11-16-realizovat-api-tasks",
+      "broken": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-realizovat-api-tasks",
+        "passed": 1,
+        "failed": 1,
+        "skipped": 1,
+        "total": 3,
+        "criteria": [
+          {
+            "id": "marshrut-api-tasks-otvechaet-200-i-tipom-applica",
+            "status": "pass",
+            "text": "Маршрут /api/tasks отвечает 200 и типом application/json",
+            "detail": "статус 200, заголовок content-type",
+            "manual": false
+          },
+          {
+            "id": "otvet-api-tasks-soderzhit-nepustoy-spisok-dannyh",
+            "status": "fail",
+            "text": "Ответ /api/tasks содержит непустой список данных",
+            "detail": "JSON не содержит непустого списка (пустой массив или массива нет)",
+            "manual": false
+          },
+          {
+            "id": "dannye-iz-otveta-deystvitelno-otobrazhayutsya-v",
+            "status": "skip",
+            "text": "Данные из ответа действительно отображаются в интерфейсе",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "fixed": {
+        "exit": 0,
+        "green": true,
+        "claimId": "2026-11-16-realizovat-api-tasks",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 1,
+        "total": 3,
+        "criteria": [
+          {
+            "id": "marshrut-api-tasks-otvechaet-200-i-tipom-applica",
+            "status": "pass",
+            "text": "Маршрут /api/tasks отвечает 200 и типом application/json",
+            "detail": "статус 200, заголовок content-type",
+            "manual": false
+          },
+          {
+            "id": "otvet-api-tasks-soderzhit-nepustoy-spisok-dannyh",
+            "status": "pass",
+            "text": "Ответ /api/tasks содержит непустой список данных",
+            "detail": "JSON содержит непустой список",
+            "manual": false
+          },
+          {
+            "id": "dannye-iz-otveta-deystvitelno-otobrazhayutsya-v",
+            "status": "skip",
+            "text": "Данные из ответа действительно отображаются в интерфейсе",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [
+          "marshrut-api-tasks-otvechaet-200-i-tipom-applica"
+        ],
+        "regressions": []
+      },
+      "machine": 2,
+      "total": 3,
+      "verdict": "ok",
+      "errors": []
+    },
+    {
+      "id": "plain-01",
+      "kind": "negative",
+      "template": "plain",
+      "task": "Сделать что-то полезное",
+      "claimId": "2026-11-16-sdelat-chto-to-poleznoe",
+      "broken": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-sdelat-chto-to-poleznoe",
+        "passed": 0,
+        "failed": 0,
+        "skipped": 3,
+        "total": 3,
+        "criteria": [
+          {
+            "id": "zayavlennoe-povedenie-vosproizvoditsya-po-shagam",
+            "status": "skip",
+            "text": "Заявленное поведение воспроизводится по шагам из задачи",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          },
+          {
+            "id": "sosednee-povedenie-ne-slomalos-regressiya",
+            "status": "skip",
+            "text": "Соседнее поведение не сломалось (регрессия)",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          },
+          {
+            "id": "zadacha-utochnena-do-proveryaemogo-utverzhdeniya",
+            "status": "skip",
+            "text": "Задача уточнена до проверяемого утверждения",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "fixed": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-sdelat-chto-to-poleznoe",
+        "passed": 0,
+        "failed": 0,
+        "skipped": 3,
+        "total": 3,
+        "criteria": [
+          {
+            "id": "zayavlennoe-povedenie-vosproizvoditsya-po-shagam",
+            "status": "skip",
+            "text": "Заявленное поведение воспроизводится по шагам из задачи",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          },
+          {
+            "id": "sosednee-povedenie-ne-slomalos-regressiya",
+            "status": "skip",
+            "text": "Соседнее поведение не сломалось (регрессия)",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          },
+          {
+            "id": "zadacha-utochnena-do-proveryaemogo-utverzhdeniya",
+            "status": "skip",
+            "text": "Задача уточнена до проверяемого утверждения",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "machine": 0,
+      "total": 3,
+      "verdict": "ok",
+      "errors": []
+    },
+    {
+      "id": "plain-02",
+      "kind": "negative",
+      "template": "plain",
+      "task": "Улучшить проект",
+      "claimId": "2026-11-16-uluchshit-proekt",
+      "broken": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-uluchshit-proekt",
+        "passed": 0,
+        "failed": 0,
+        "skipped": 3,
+        "total": 3,
+        "criteria": [
+          {
+            "id": "zayavlennoe-povedenie-vosproizvoditsya-po-shagam",
+            "status": "skip",
+            "text": "Заявленное поведение воспроизводится по шагам из задачи",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          },
+          {
+            "id": "sosednee-povedenie-ne-slomalos-regressiya",
+            "status": "skip",
+            "text": "Соседнее поведение не сломалось (регрессия)",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          },
+          {
+            "id": "zadacha-utochnena-do-proveryaemogo-utverzhdeniya",
+            "status": "skip",
+            "text": "Задача уточнена до проверяемого утверждения",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "fixed": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-uluchshit-proekt",
+        "passed": 0,
+        "failed": 0,
+        "skipped": 3,
+        "total": 3,
+        "criteria": [
+          {
+            "id": "zayavlennoe-povedenie-vosproizvoditsya-po-shagam",
+            "status": "skip",
+            "text": "Заявленное поведение воспроизводится по шагам из задачи",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          },
+          {
+            "id": "sosednee-povedenie-ne-slomalos-regressiya",
+            "status": "skip",
+            "text": "Соседнее поведение не сломалось (регрессия)",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          },
+          {
+            "id": "zadacha-utochnena-do-proveryaemogo-utverzhdeniya",
+            "status": "skip",
+            "text": "Задача уточнена до проверяемого утверждения",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "machine": 0,
+      "total": 3,
+      "verdict": "ok",
+      "errors": []
+    },
+    {
+      "id": "plain-03",
+      "kind": "negative",
+      "template": "plain",
+      "task": "Починить баг",
+      "claimId": "2026-11-16-pochinit-bag",
+      "broken": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-pochinit-bag",
+        "passed": 0,
+        "failed": 0,
+        "skipped": 3,
+        "total": 3,
+        "criteria": [
+          {
+            "id": "zayavlennoe-povedenie-vosproizvoditsya-po-shagam",
+            "status": "skip",
+            "text": "Заявленное поведение воспроизводится по шагам из задачи",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          },
+          {
+            "id": "sosednee-povedenie-ne-slomalos-regressiya",
+            "status": "skip",
+            "text": "Соседнее поведение не сломалось (регрессия)",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          },
+          {
+            "id": "zadacha-utochnena-do-proveryaemogo-utverzhdeniya",
+            "status": "skip",
+            "text": "Задача уточнена до проверяемого утверждения",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "fixed": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-pochinit-bag",
+        "passed": 0,
+        "failed": 0,
+        "skipped": 3,
+        "total": 3,
+        "criteria": [
+          {
+            "id": "zayavlennoe-povedenie-vosproizvoditsya-po-shagam",
+            "status": "skip",
+            "text": "Заявленное поведение воспроизводится по шагам из задачи",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          },
+          {
+            "id": "sosednee-povedenie-ne-slomalos-regressiya",
+            "status": "skip",
+            "text": "Соседнее поведение не сломалось (регрессия)",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          },
+          {
+            "id": "zadacha-utochnena-do-proveryaemogo-utverzhdeniya",
+            "status": "skip",
+            "text": "Задача уточнена до проверяемого утверждения",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "machine": 0,
+      "total": 3,
+      "verdict": "ok",
+      "errors": []
+    },
+    {
+      "id": "plain-04",
+      "kind": "negative",
+      "template": "plain",
+      "task": "Навести порядок в коде",
+      "claimId": "2026-11-16-navesti-poryadok-v-kode",
+      "broken": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-navesti-poryadok-v-kode",
+        "passed": 0,
+        "failed": 0,
+        "skipped": 3,
+        "total": 3,
+        "criteria": [
+          {
+            "id": "zayavlennoe-povedenie-vosproizvoditsya-po-shagam",
+            "status": "skip",
+            "text": "Заявленное поведение воспроизводится по шагам из задачи",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          },
+          {
+            "id": "sosednee-povedenie-ne-slomalos-regressiya",
+            "status": "skip",
+            "text": "Соседнее поведение не сломалось (регрессия)",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          },
+          {
+            "id": "zadacha-utochnena-do-proveryaemogo-utverzhdeniya",
+            "status": "skip",
+            "text": "Задача уточнена до проверяемого утверждения",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "fixed": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-navesti-poryadok-v-kode",
+        "passed": 0,
+        "failed": 0,
+        "skipped": 3,
+        "total": 3,
+        "criteria": [
+          {
+            "id": "zayavlennoe-povedenie-vosproizvoditsya-po-shagam",
+            "status": "skip",
+            "text": "Заявленное поведение воспроизводится по шагам из задачи",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          },
+          {
+            "id": "sosednee-povedenie-ne-slomalos-regressiya",
+            "status": "skip",
+            "text": "Соседнее поведение не сломалось (регрессия)",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          },
+          {
+            "id": "zadacha-utochnena-do-proveryaemogo-utverzhdeniya",
+            "status": "skip",
+            "text": "Задача уточнена до проверяемого утверждения",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "machine": 0,
+      "total": 3,
+      "verdict": "ok",
+      "errors": []
+    },
+    {
+      "id": "plain-05",
+      "kind": "negative",
+      "template": "plain",
+      "task": "Обновить зависимости",
+      "claimId": "2026-11-16-obnovit-zavisimosti",
+      "broken": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-obnovit-zavisimosti",
+        "passed": 0,
+        "failed": 0,
+        "skipped": 3,
+        "total": 3,
+        "criteria": [
+          {
+            "id": "zayavlennoe-povedenie-vosproizvoditsya-po-shagam",
+            "status": "skip",
+            "text": "Заявленное поведение воспроизводится по шагам из задачи",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          },
+          {
+            "id": "sosednee-povedenie-ne-slomalos-regressiya",
+            "status": "skip",
+            "text": "Соседнее поведение не сломалось (регрессия)",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          },
+          {
+            "id": "zadacha-utochnena-do-proveryaemogo-utverzhdeniya",
+            "status": "skip",
+            "text": "Задача уточнена до проверяемого утверждения",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "fixed": {
+        "exit": 1,
+        "green": false,
+        "claimId": "2026-11-16-obnovit-zavisimosti",
+        "passed": 0,
+        "failed": 0,
+        "skipped": 3,
+        "total": 3,
+        "criteria": [
+          {
+            "id": "zayavlennoe-povedenie-vosproizvoditsya-po-shagam",
+            "status": "skip",
+            "text": "Заявленное поведение воспроизводится по шагам из задачи",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          },
+          {
+            "id": "sosednee-povedenie-ne-slomalos-regressiya",
+            "status": "skip",
+            "text": "Соседнее поведение не сломалось (регрессия)",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          },
+          {
+            "id": "zadacha-utochnena-do-proveryaemogo-utverzhdeniya",
+            "status": "skip",
+            "text": "Задача уточнена до проверяемого утверждения",
+            "detail": "ручная проверка — требует человека",
+            "manual": true
+          }
+        ],
+        "tautologies": [],
+        "regressions": []
+      },
+      "machine": 0,
+      "total": 3,
+      "verdict": "ok",
+      "errors": []
+    }
+  ]
+}

@@ -64,7 +64,13 @@ export async function runClaim(claim: Claim, config: WitnessConfig, options: Run
   return record;
 }
 
-/** Exit-код: 0 только если все обязательные критерии прошли. */
+/** Сколько критериев действительно проверено машиной (ручные получают skip). */
+export function machineChecks(record: RunRecord): number {
+  return Math.max(record.total - record.skipped, 0);
+}
+
+/** Exit-код: 0 только если есть машинные проверки и все обязательные прошли. */
 export function exitCodeFor(record: RunRecord): number {
+  if (machineChecks(record) === 0) return 1;
   return record.requiredFailed === 0 ? 0 : 1;
 }

@@ -64,12 +64,12 @@ export function badgeSvg(label: string, message: string, color: string): string 
 export function buildBadge(run: RunFile, ledger: { hash: string; runs: number }): BadgeFile {
   // Ручные критерии не влияют на цвет: badge говорит только о машинных проверках.
   const machine = Math.max(run.total - run.skipped, 0);
-  const total = machine > 0 ? machine : run.total;
-  const passed = run.passed;
+  const total = machine;
+  const passed = machine > 0 ? run.passed : 0;
   return {
     schema: 1,
     label: "witness",
-    message: `${passed}/${total} passing`,
+    message: machine > 0 ? `${passed}/${total} passing` : "no machine checks",
     color: badgeColor(passed, total),
     ledger: ledger.hash,
     runs: ledger.runs,

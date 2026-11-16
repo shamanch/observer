@@ -49,6 +49,36 @@ test("логин проверяет код 401 на неверных данны�
   assert.equal(hasUnauthorized, true);
 });
 
+test("логин проверяет маршрут из задачи, а не всегда /api/login", () => {
+  const criteria = generateHeuristic("Сделать login на /api/session");
+  const paths = criteria
+    .map((criterion) => (criterion.check.type === "http" ? criterion.check.path : ""))
+    .filter(Boolean);
+  assert.ok(paths.includes("/api/session"), `нет /api/session среди ${paths.join(", ")}`);
+  assert.equal(paths.includes("/api/login"), false);
+});
+
+test("API-задача требует непустой JSON, а не просто скобку", () => {
+  const criteria = generateHeuristic("Создать API /api/orders со списком заказов");
+  const nonEmpty = criteria.find(
+    (criterion) => criterion.check.type === "http" && criterion.check.expect.jsonNonEmpty === true,
+  );
+  assert.ok(nonEmpty, "нет критерия jsonNonEmpty");
+  const bracket = criteria.find(
+    (criterion) =>
+      criterion.check.type === "http" && criterion.check.expect.bodyContains?.includes("["),
+  );
+  assert.equal(bracket, undefined, "осталась слабая проверка на скобку");
+});
+
+test("CSV-задача требует минимум две непустые строки", () => {
+  const criteria = generateHeuristic("Добавить экспорт отчёта в CSV на странице /reports");
+  const lines = criteria.find(
+    (criterion) => criterion.check.type === "http" && criterion.check.expect.bodyMinLines === 2,
+  );
+  assert.ok(lines, "нет критерия bodyMinLines: 2");
+});
+
 test("API-задача проверяет content-type", () => {
   const criteria = generateHeuristic("Создать API /api/orders со списком заказов");
   const hasJson = criteria.some(
@@ -80,14 +110,9 @@ test("extractPath находит путь и не путается в текст
   assert.equal(extractPath("без пути вообще"), null);
 });
 
-test("задача без ключевых слов всё равно даёт честные критерии", () => {
+test("расплывчатая задача без маршрута не получает выдуманную http-проверку", () => {
   const criteria = generateHeuristic("Сделать что-то полезное");
-  assert.equal(countHttp(criteria), 1);
-  assert.ok(criteria.some((criterion) => criterion.check.type === "manual"));
-  // Никаких тавтологий вида bodyContains: [""]
-  for (const criterion of criteria) {
-    if (criterion.check.type === "http" && criterion.check.expect.bodyContains) {
-      assert.ok(criterion.check.expect.bodyContains.every((needle) => needle.length > 0));
-    }
-  }
+  assert.equal(countHttp(criteria), 0);
+  assert.equal(criteria.every((criterion) => criterion.check.type === "manual"), true);
+  assert.ok(criteria.length >= 3);
 });

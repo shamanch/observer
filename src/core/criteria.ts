@@ -9,6 +9,10 @@ export type HttpExpect = {
   bodyContains?: string[];
   /** Значения по «точечному» пути в JSON-ответе: { "user.role": "admin" }. */
   jsonPath?: Record<string, JsonScalar>;
+  /** В JSON есть хотя бы один непустой массив: сам ответ или вложенное поле. */
+  jsonNonEmpty?: boolean;
+  /** Минимум непустых строк в теле — для CSV и других построчных форматов. */
+  bodyMinLines?: number;
   /** Ожидаемые заголовки ответа. */
   header?: Record<string, string>;
 };
@@ -236,6 +240,24 @@ function validateCheck(value: unknown, where: string, errors: string[]): Check |
       else expect.jsonPath = Object.fromEntries(entries);
     }
   }
+  if (raw.jsonNonEmpty !== undefined) {
+    if (typeof raw.jsonNonEmpty !== "boolean") {
+      errors.push(`${where}: expect.jsonNonEmpty должен быть boolean`);
+    } else if (raw.jsonNonEmpty) {
+      expect.jsonNonEmpty = true;
+    }
+  }
+  if (raw.bodyMinLines !== undefined) {
+    if (
+      typeof raw.bodyMinLines !== "number" ||
+      !Number.isInteger(raw.bodyMinLines) ||
+      raw.bodyMinLines < 1
+    ) {
+      errors.push(`${where}: expect.bodyMinLines должен быть целым числом ≥ 1`);
+    } else {
+      expect.bodyMinLines = raw.bodyMinLines;
+    }
+  }
   if (raw.header !== undefined) {
     if (!isObject(raw.header)) {
       errors.push(`${where}: expect.header должен быть объектом`);
@@ -247,9 +269,14 @@ function validateCheck(value: unknown, where: string, errors: string[]): Check |
       else expect.header = Object.fromEntries(entries);
     }
   }
-  const assertions = [expect.status, expect.bodyContains, expect.jsonPath, expect.header].filter(
-    (item) => item !== undefined,
-  );
+  const assertions = [
+    expect.status,
+    expect.bodyContains,
+    expect.jsonPath,
+    expect.jsonNonEmpty,
+    expect.bodyMinLines,
+    expect.header,
+  ].filter((item) => item !== undefined);
   if (assertions.length === 0) {
     errors.push(`${where}: http-проверка не содержит ни одного утверждения`);
     return null;

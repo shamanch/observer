@@ -139,6 +139,57 @@ test("validateClaim отклоняет неизвестное действие �
   if (!result.ok) assert.match(result.errors.join(" "), /неизвестное действие/);
 });
 
+test("validateClaim принимает jsonNonEmpty и bodyMinLines", () => {
+  const result = validateClaim({
+    ...valid,
+    criteria: [
+      {
+        id: "data",
+        text: "Ответ содержит непустой список",
+        check: { type: "http", method: "GET", path: "/api/items", expect: { jsonNonEmpty: true } },
+      },
+      {
+        id: "csv",
+        text: "В CSV есть заголовок и строка",
+        check: { type: "http", method: "GET", path: "/export", expect: { bodyMinLines: 2 } },
+      },
+    ],
+  });
+  assert.equal(result.ok, true);
+  if (result.ok) {
+    const first = result.claim.criteria[0]?.check;
+    const second = result.claim.criteria[1]?.check;
+    assert.equal(first?.type === "http" ? first.expect.jsonNonEmpty : undefined, true);
+    assert.equal(second?.type === "http" ? second.expect.bodyMinLines : undefined, 2);
+  }
+});
+
+test("validateClaim отклоняет некорректные jsonNonEmpty и bodyMinLines", () => {
+  const badJson = validateClaim({
+    ...valid,
+    criteria: [
+      {
+        id: "x",
+        text: "x",
+        check: { type: "http", method: "GET", path: "/", expect: { jsonNonEmpty: "yes" } },
+      },
+    ],
+  });
+  assert.equal(badJson.ok, false);
+
+  const badLines = validateClaim({
+    ...valid,
+    criteria: [
+      {
+        id: "y",
+        text: "y",
+        check: { type: "http", method: "GET", path: "/", expect: { bodyMinLines: 0 } },
+      },
+    ],
+  });
+  assert.equal(badLines.ok, false);
+});
+
 test("uniqueCriterionIds разводит дубликаты", () => {
   const criteria = [
     { id: "same", text: "a", required: true },

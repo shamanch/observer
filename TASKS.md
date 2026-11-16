@@ -119,6 +119,75 @@
 
 ---
 
+## Эпик 7. Измерение доверия (golden-набор)
+
+### T7.1 — Сервер двух состояний
+- **files:** `eval/golden/server.mjs`
+- **acceptance:** `GOLDEN_STATE=broken` — фичи нет, включая «тихие» ловушки (`200 application/json` с пустым списком, `200 text/plain` вместо CSV); `GOLDEN_STATE=fixed` — фича реализована ровно по маршрутам кейсов; маршруты из negative-кейсов отсутствуют в обоих состояниях.
+- **verify:** `GOLDEN_STATE=broken PORT=3911 node eval/golden/server.mjs` → `curl /api/items` отдаёт `{"items":[]}`, `/api/session` → 404.
+- **статус:** [x]
+
+### T7.2 — Харнесс и метрики
+- **files:** `eval/golden/run.mjs`, `eval/golden/cases.json`
+- **acceptance:** 20 кейсов (13 positive, 7 negative); для каждого `init` → `claim --yes --no-llm` → `run --baseline` на broken → `run` на fixed; считаются false-green, negative-green, false-red, тавтологии, доля машинных критериев; отчёт пишется в `eval/golden/last-report.json`; exit 1 при регрессии.
+- **verify:** `npm run golden` → таблица 20 кейсов, `last-report.json` существует; exit 0 только при нулевых false-green/negative-green/false-red.
+- **статус:** [x]
+
+### T7.3 — Сила критериев
+- **files:** `src/core/criteria.ts`, `src/core/http.ts`, `src/core/claimgen.ts`
+- **acceptance:** `jsonNonEmpty` требует непустой массив, а не символ `[`; `bodyMinLines` требует минимум N непустых строк; login/api/csv берут маршрут из задачи; fallback без маршрута — только ручные критерии; без машинных проверок exit 1; badge `no machine checks`; отчёт `НЕ ПРОВЕРЕНО`.
+- **verify:** `node --test test/http.test.ts test/criteria.test.ts test/claimgen.test.ts test/runner.test.ts test/badge.test.ts test/report.test.ts` + `npm run golden` → 0/20 false-green.
+- **статус:** [x]
+
+---
+
+## Эпик 8. Дистрибуция npm
+
+### T8.1 — Сборка без зависимостей
+- **files:** `scripts/build.mjs`, `package.json`
+- **acceptance:** `prepare` снимает типы через встроенный `stripTypeScriptTypes`, переписывает импорты `.ts` → `.js`, кладёт `dist/`; `files` включает `dist`, `skills`, README, LICENSE; `engines.node >= 24`; `dependencies: {}`.
+- **verify:** `npm pack --dry-run` → в списке только `dist/` (не `src/*.ts`), `skills/witness/SKILL.md` присутствует; `node dist/bin/witness.js --version` → `0.1.0`.
+- **статус:** [x]
+
+### T8.2 — Проверка установленного пакета
+- **files:** `witness-cli-0.1.0.tgz` (артефакт сборки, в git не входит)
+- **acceptance:** установка в чистый префикс работает; установленный пакет на golden-сервере даёт broken → exit 1, fixed → exit 0; `witness --version` не падает на `ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING`.
+- **verify:** `npm i -g witness-cli-0.1.0.tgz --prefix <tmp>` + прогон broken/fixed → `INSTALLED PACKAGE OK`.
+- **статус:** [x]
+
+### T8.3 — Публикация
+- **acceptance:** `npm publish` выполнен, `npx witness-cli --version` работает у стороннего пользователя.
+- **verify:** `npm view witness-cli version` → `0.1.0`.
+- **статус:** [ ] — **заблокровано:** нужен аккаунт npm и публичный `repository`.
+
+---
+
+## Эпик 9. VS Code и навык для агента
+
+### T9.1 — VSIX
+- **files:** `vscode/package.json`, `vscode/.vscodeignore`, `vscode/LICENSE`, `vscode/witness-vscode-0.1.0.vsix`
+- **acceptance:** `@vscode/vsce package` собирает расширение без ошибок; в VSIX входят `package.json`, `readme.md`, `LICENSE.txt`, `src/extension.cjs`; `private` снят, лицензия MIT.
+- **verify:** `npx --yes @vscode/vsce package` → `DONE Packaged: … (6 files)`.
+- **статус:** [x]
+
+### T9.2 — Публикация расширения
+- **acceptance:** расширение опубликовано реальным publisher, устанавливается из Marketplace.
+- **verify:** `code --install-extension <publisher>.witness-vscode`.
+- **статус:** [ ] — **заблокировано:** нужен publisher-аккаунт; `"publisher": "witness"` — заглушка.
+
+### T9.3 — Навык `witness`
+- **files:** `skills/witness/SKILL.md`
+- **acceptance:** навык требует утверждения критериев человеком, baseline до работы и свежий `witness run` перед словом «готово»; запрещает ослаблять критерии и считать ручные шаги доказательством; формат ответа содержит exit-код и детали падений.
+- **verify:** файл входит в npm-tarball (`npm pack --dry-run`); формат соответствует `components/skills/<category>/<name>/SKILL.md`.
+- **статус:** [x]
+
+### T9.4 — PR в aitmpl
+- **acceptance:** навык добавлен в `davila7/claude-code-templates` по пути `cli-tool/components/skills/development/witness/SKILL.md`.
+- **verify:** файл виден в upstream-репозитории, каталог aitmpl его показывает.
+- **статус:** [ ] — **заблокировано:** нужен форк и авторизация GitHub.
+
+---
+
 ## Definition of Done (для всего MVP)
 
 1. `node --test` — все тесты зелёные.

@@ -1,4 +1,5 @@
 import type { Criterion } from "./criteria.ts";
+import { machineChecks } from "./runner.ts";
 import type { CheckResult, RunRecord } from "./types.ts";
 
 /** Текстовый вывод в терминал: компактно и без цвета, чтобы читалось в CI. */
@@ -54,6 +55,8 @@ export function printRun(record: RunRecord): void {
     if (tautologies.length === 0 && regressions.length === 0) console.log("    проверки различают состояния");
   }
 
-  const verdict = record.requiredFailed === 0 ? "ПРОШЛО" : "НЕ ПРОШЛО";
-  console.log(`\n  Итог: ${verdict} · ${record.passed}/${record.total} прошло, ${record.failed} упало, ${record.skipped} ручных\n`);
+  const machine = machineChecks(record);
+  const verdict = machine === 0 ? "НЕ ПРОВЕРЕНО" : record.requiredFailed === 0 ? "ПРОШЛО" : "НЕ ПРОШЛО";
+  console.log(`\n  Итог: ${verdict} · ${record.passed}/${record.total} прошло, ${record.failed} упало, ${record.skipped} ручных`);
+  if (machine === 0) console.log("  машинных проверок нет — автоматически подтвердить нечем\n");
 }

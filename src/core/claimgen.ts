@@ -58,7 +58,7 @@ const RULES: Rule[] = [
           type: "http",
           method: "GET",
           path: route,
-          expect: { bodyContains: ["\n"] },
+          expect: { bodyMinLines: 2, bodyContains: [","] },
         }),
         criterion("В интерфейсе есть кнопка экспорта, и она скачивает файл", {
           type: "manual",
@@ -73,8 +73,9 @@ const RULES: Rule[] = [
   },
   {
     match: /логин|login|вход|авториз|auth|пароль|password/i,
-    build: (task) => {
-      const route = "/api/login";
+    build: (task, path) => {
+      // Маршрут берём из задачи: если человек назвал /signin, проверять /api/login нельзя.
+      const route = path || "/api/login";
       return [
         criterion(`Маршрут ${route} отвечает 200`, {
           type: "http",
@@ -118,7 +119,7 @@ const RULES: Rule[] = [
           type: "http",
           method: "GET",
           path: route,
-          expect: { bodyContains: ["["] },
+          expect: { jsonNonEmpty: true },
         }),
         criterion("Данные из ответа действительно отображаются в интерфейсе", {
           type: "manual",
@@ -160,17 +161,12 @@ const RULES: Rule[] = [
 
 /**
  * Универсальный набор, если ни одно правило не сработало.
- * Честно помечаем ручные шаги как manual, а не подсовываем тавтологичное http-утверждение.
+ * Если задача не называет маршрут, машинной проверки не выдумываем:
+ * «маршрут / отвечает 200» ничего не говорит о выполнении задачи.
+ * Все критерии ручные — run честно вернёт «НЕ ПРОВЕРЕНО».
  */
 function fallback(task: string, path: string): Criterion[] {
-  const route = path || "/";
-  return [
-    criterion(`Маршрут ${route} отвечает 200`, {
-      type: "http",
-      method: "GET",
-      path: route,
-      expect: { status: 200 },
-    }),
+  const manual: Criterion[] = [
     criterion("Заявленное поведение воспроизводится по шагам из задачи", {
       type: "manual",
       steps: [
@@ -182,6 +178,23 @@ function fallback(task: string, path: string): Criterion[] {
       type: "manual",
       steps: ["Пройти основной сценарий, который работал до задачи", "Сравнить с прежним поведением"],
     }),
+    criterion("Задача уточнена до проверяемого утверждения", {
+      type: "manual",
+      steps: [
+        "Указать конкретный маршрут, файл или команду, где виден результат",
+        "Добавить машинную проверку: witness claim \"…\" заново с адресом",
+      ],
+    }),
+  ];
+  if (!path) return manual;
+  return [
+    criterion(`Маршрут ${path} отвечает 200`, {
+      type: "http",
+      method: "GET",
+      path,
+      expect: { status: 200 },
+    }),
+    ...manual,
   ];
 }
 

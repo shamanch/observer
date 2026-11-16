@@ -50,6 +50,14 @@ test("ручные критерии не портят цвет badge", () => {
   assert.equal(badge.color, "#1a7f37");
 });
 
+test("без машинных проверок badge не притворяется зелёным", () => {
+  const manualOnly: RunFile = { ...run(0, 2), skipped: 2, requiredFailed: 0 };
+  const badge = buildBadge(manualOnly, { hash: "x", runs: 1 });
+  assert.equal(badge.message, "no machine checks");
+  assert.equal(badge.total, 0);
+  assert.equal(badge.color, "#6e7781");
+});
+
 test("verifyBadge: ok при совпадении, mismatch при изменении", () => {
   const badge = buildBadge(run(1, 1), { hash: "same", runs: 1 });
   assert.equal(verifyBadge(badge, { hash: "same" }).ok, true);

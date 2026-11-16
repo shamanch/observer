@@ -1,5 +1,6 @@
 import type { Claim } from "./criteria.ts";
 import type { RunFile } from "./ledger.ts";
+import { machineChecks } from "./runner.ts";
 import type { CheckStatus } from "./types.ts";
 
 /** Самодостаточный HTML-отчёт: один файл, ноль внешних запросов. */
@@ -36,8 +37,9 @@ export type ReportInput = {
 
 export function buildReport(input: ReportInput): string {
   const { run } = input;
-  const verdict = run.requiredFailed === 0 ? "ПРОВЕРЕНО" : "НЕ ПРОШЛО";
-  const verdictClass = run.requiredFailed === 0 ? "ok" : "bad";
+  const machine = machineChecks(run);
+  const verdict = machine === 0 ? "НЕ ПРОВЕРЕНО" : run.requiredFailed === 0 ? "ПРОВЕРЕНО" : "НЕ ПРОШЛО";
+  const verdictClass = machine === 0 ? "skip" : run.requiredFailed === 0 ? "ok" : "bad";
   const date = new Date(run.finishedAt).toLocaleString("ru-RU");
 
   const criteriaRows = run.criteria
@@ -103,7 +105,7 @@ export function buildReport(input: ReportInput): string {
   h2 { font-size:16px; margin:28px 0 10px; }
   .muted { color:#6e7781; }
   .verdict { display:inline-block; padding:4px 12px; border-radius:999px; font-weight:700; font-size:13px; color:#fff; }
-  .verdict.ok { background:var(--ok); } .verdict.bad { background:var(--bad); }
+  .verdict.ok { background:var(--ok); } .verdict.bad { background:var(--bad); } .verdict.skip { background:var(--skip); }
   .meta { margin:8px 0 0; color:#6e7781; font-size:13px; }
   .summary { display:flex; gap:20px; margin:20px 0 8px; }
   .summary div { padding:10px 16px; border:1px solid var(--line); border-radius:8px; min-width:96px; }
