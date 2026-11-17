@@ -44,6 +44,15 @@ test("--version печатает версию, а не справку", async ()
   assert.deepEqual(lines, [VERSION]);
 });
 
+test("VERSION совпадает с package.json", () => {
+  const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as {
+    name: string;
+    version: string;
+  };
+  assert.equal(pkg.name, "witness-cli");
+  assert.equal(VERSION, pkg.version);
+});
+
 test("без аргументов печатается справка", async () => {
   const lines: string[] = [];
   const log = console.log;

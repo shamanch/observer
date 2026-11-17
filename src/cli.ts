@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 import { badge } from "./commands/badge.ts";
 import { claim } from "./commands/claim.ts";
 import { init } from "./commands/init.ts";
@@ -5,7 +7,27 @@ import { report } from "./commands/report.ts";
 import { run } from "./commands/run.ts";
 import { wrap } from "./commands/wrap.ts";
 
-export const VERSION = "0.1.0";
+/**
+ * Версия читается из package.json, чтобы `--version` не расходился с тем,
+ * что реально опубликовано в npm. В репозитории файл лежит на уровень выше
+ * (`src/cli.ts`), в собранном пакете — на два (`dist/src/cli.js`).
+ */
+function readVersion(): string {
+  for (const rel of ["../package.json", "../../package.json"]) {
+    try {
+      const raw = readFileSync(new URL(rel, import.meta.url), "utf8");
+      const parsed = JSON.parse(raw) as { name?: unknown; version?: unknown };
+      if (parsed.name === "witness-cli" && typeof parsed.version === "string") {
+        return parsed.version;
+      }
+    } catch {
+      // файла нет или он битый — пробуем следующий уровень
+    }
+  }
+  return "0.0.0";
+}
+
+export const VERSION = readVersion();
 
 const HELP = `witness ${VERSION} — проверяет, что AI-агент реально сделал задачу
 
