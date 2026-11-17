@@ -254,9 +254,13 @@ npx witness badge          # SVG + badge.json для README
   встроенным `stripTypeScriptTypes` и переписывает импорты `.ts` → `.js` в `dist/`;
   `prepare` собирает пакет, `files` включает `dist`, `skills`, README и LICENSE.
 - Установка из tarball в чистый префикс проверена end-to-end: broken → exit 1, fixed → exit 0.
-- Пакет опубликован: **`witness-cli@0.1.0`** (`latest`). Первая публикация нового пакета
+- Пакет опубликован: **`witness-cli@0.1.2`** (`latest`). Первая публикация нового пакета
   прошла через staged publishing: npm создал placeholder `0.0.0-stage`, версия `0.1.0`
   стала доступна после обработки. Установка из registry проверена end-to-end.
+  `0.1.1` добавил исправленный навык (триггер до начала работы, честный путь для позднего
+  запуска). В `0.1.1` обнаружился баг: `--version` печатал `0.1.0` из зашитой константы;
+  в `0.1.2` версия читается из `package.json`, добавлен тест на совпадение. Проверка
+  установки `0.1.2` из registry: `witness --version` → `0.1.2`.
 - VS Code: `@vscode/vsce package` → `vscode/witness-vscode-0.1.0.vsix` (5,89 КБ, 6 файлов).
 - Навык `skills/witness/SKILL.md` — для OpenCode, Claude Code и каталога aitmpl
   (`components/skills/development/<name>/SKILL.md`).
