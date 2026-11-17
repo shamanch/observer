@@ -173,7 +173,7 @@
 ### T9.2 — Публикация расширения
 - **acceptance:** расширение опубликовано реальным publisher, устанавливается из Marketplace.
 - **verify:** `code --install-extension <publisher>.witness-vscode`.
-- **статус:** [ ] — **заблокировано:** нужен publisher-аккаунт; `"publisher": "witness"` — заглушка.
+- **статус:** [ ] — **заблокировано:** нужен реальный publisher ID и PAT с правом Marketplace → Manage; `"publisher": "witness"` — заглушка. VSIX проверен установкой в VS Code: `code --install-extension witness-vscode-0.1.0.vsix` → `witness.witness-vscode`.
 
 ### T9.3 — Навык `witness`
 - **files:** `skills/witness/SKILL.md`
@@ -184,7 +184,7 @@
 ### T9.4 — PR в aitmpl
 - **acceptance:** навык добавлен в `davila7/claude-code-templates` по пути `cli-tool/components/skills/development/witness/SKILL.md`.
 - **verify:** файл виден в upstream-репозитории, каталог aitmpl его показывает.
-- **статус:** [ ] — **заблокировано:** нужен форк и авторизация GitHub.
+- **статус:** [ ] — **в review:** PR [#1607](https://github.com/davila7/claude-code-templates/pull/1607) открыт; ждёт проверок CI и review мейнтейнера.
 
 ---
 

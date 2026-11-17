@@ -263,5 +263,10 @@ npx witness badge          # SVG + badge.json для README
 
 **Внешние блокеры, которые нельзя закрыть кодом:**
 
-- VS Code Marketplace требует реального publisher (`"publisher": "witness"` — заглушка).
-- PR в `davila7/claude-code-templates` требует форка и авторизации GitHub.
+- VS Code Marketplace требует реального publisher (`"publisher": "witness"` — заглушка)
+  и PAT с правом Marketplace → Manage. VSIX проверен локальной установкой:
+  `code --install-extension vscode/witness-vscode-0.1.0.vsix` → `witness.witness-vscode`.
+- Навык отправлен в aitmpl: PR [#1607](https://github.com/davila7/claude-code-templates/pull/1607),
+  ветка `add-witness-skill` в форке `shamanch/claude-code-templates`. Дальше — CI и review мейнтейнера.
+- Навык переведён на английский: каталог aitmpl англоязычный, агенту язык инструкции безразличен.
+  Русская версия остаётся в `skills/witness/SKILL.ru.md`.
