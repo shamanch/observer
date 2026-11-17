@@ -158,7 +158,7 @@
 ### T8.3 — Публикация
 - **acceptance:** `npm publish` выполнен, `npx witness-cli --version` работает у стороннего пользователя.
 - **verify:** `npm view witness-cli version` → `0.1.0`.
-- **статус:** [ ] — **заблокровано:** нужен аккаунт npm и публичный `repository`.
+- **статус:** [x] — `witness-cli@0.1.0` опубликован в registry; установка из npm проверена end-to-end (`INSTALLED PACKAGE OK`). Первая публикация прошла через staged publishing: placeholder `0.0.0-stage`, затем `0.1.0`.
 
 ---
 

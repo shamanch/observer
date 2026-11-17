@@ -248,17 +248,20 @@ npx witness badge          # SVG + badge.json для README
 ### 10.3 Дистрибуция
 
 - npm-пакет **`witness-cli`** (имя `witness` занято), команда остаётся `witness`.
+- Репозиторий: **https://github.com/shamanch/observer**, ветка `main`.
 - Node запрещает type stripping для файлов внутри `node_modules`
   (`ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING`). Поэтому `scripts/build.mjs` снимает типы
   встроенным `stripTypeScriptTypes` и переписывает импорты `.ts` → `.js` в `dist/`;
   `prepare` собирает пакет, `files` включает `dist`, `skills`, README и LICENSE.
 - Установка из tarball в чистый префикс проверена end-to-end: broken → exit 1, fixed → exit 0.
-- VS Code: `@vscode/vsce package` → `vscode/witness-vscode-0.1.0.vsix` (5,72 КБ, 6 файлов).
+- Пакет опубликован: **`witness-cli@0.1.0`** (`latest`). Первая публикация нового пакета
+  прошла через staged publishing: npm создал placeholder `0.0.0-stage`, версия `0.1.0`
+  стала доступна после обработки. Установка из registry проверена end-to-end.
+- VS Code: `@vscode/vsce package` → `vscode/witness-vscode-0.1.0.vsix` (5,89 КБ, 6 файлов).
 - Навык `skills/witness/SKILL.md` — для OpenCode, Claude Code и каталога aitmpl
   (`components/skills/development/<name>/SKILL.md`).
 
 **Внешние блокеры, которые нельзя закрыть кодом:**
 
-- `npm publish` требует аккаунт и токен npm; `repository` в манифестах пуст, потому что git remote не настроен.
 - VS Code Marketplace требует реального publisher (`"publisher": "witness"` — заглушка).
 - PR в `davila7/claude-code-templates` требует форка и авторизации GitHub.

@@ -32,11 +32,22 @@ cd observer
 node bin/witness.js --help
 ```
 
-Глобально из npm (пакет ещё не опубликован — до публикации используйте `npm link`):
+Глобально из npm:
 
 ```bash
-npm i -g witness-cli   # после публикации
-npm link               # сейчас: доступна команда witness
+npm i -g witness-cli
+```
+
+Или разово, без глобальной установки:
+
+```bash
+npx witness-cli --help
+```
+
+Для локальной разработки из клона:
+
+```bash
+npm link
 ```
 
 ## Быстрый старт (5 минут)
