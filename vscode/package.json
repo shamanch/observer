@@ -3,7 +3,7 @@
   "displayName": "Witness",
   "description": "Проверяет, что AI-агент реально сделал задачу: критерии приёмки, прогон, badge",
   "version": "0.1.0",
-  "publisher": "witness",
+  "publisher": "shamanch",
   "license": "MIT",
   "repository": {
     "type": "git",
