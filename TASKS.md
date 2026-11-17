@@ -173,7 +173,7 @@
 ### T9.2 — Публикация расширения
 - **acceptance:** расширение опубликовано реальным publisher, устанавливается из Marketplace.
 - **verify:** `code --install-extension shamanch.witness-vscode`.
-- **статус:** [~] — **опубликовано, идёт скан:** publisher `shamanch` создан вручную, `"publisher": "shamanch"` в манифесте. Публикация без PAT — Trusted Publishing (OIDC), политика `Release` → `shamanch/observer`, workflow `publish-vscode.yml`. Прогон 44155696665 успешен, версия `0.1.0` в кабинете publisher со статусом **Verifying** (Availability Public). Публичная страница и установка из Marketplace отдают 404 / «Extension not found» до окончания вирусного скана. VSIX проверен локальной установкой: `code --install-extension witness-vscode-0.1.0.vsix` → `witness.witness-vscode` (заглушка publisher ещё стоит). Осталось: дождаться Published и установить `shamanch.witness-vscode`.
+- **статус:** [x] — publisher `shamanch` создан вручную, `"publisher": "shamanch"` в манифесте. Публикация без PAT — Trusted Publishing (OIDC), политика `Release` → `shamanch/observer`, workflow `publish-vscode.yml` (прогон 44155696665 успешен). `0.1.0` прошёл вирусный скан: публичная страница HTTP 200, установка из Marketplace проверена — `code --install-extension shamanch.witness-vscode` → `v0.1.0 was successfully installed`. Заглушка `witness.witness-vscode` удалена.
 
 ### T9.3 — Навык `witness`
 - **files:** `skills/witness/SKILL.md`
@@ -184,7 +184,7 @@
 ### T9.4 — PR в aitmpl
 - **acceptance:** навык добавлен в `davila7/claude-code-templates` по пути `cli-tool/components/skills/development/witness/SKILL.md`.
 - **verify:** файл виден в upstream-репозитории, каталог aitmpl его показывает.
-- **статус:** [~] — **в review:** PR [#1607](https://github.com/davila7/claude-code-templates/pull/1607) открыт, `mergeable: true`, CI зелёный. Замечания ботов обработаны коммитом `6c21462` (триггер до начала работы, путь для позднего запуска, запрет на установку пакетов агентом), треды закрыты. Осталось: review и merge мейнтейнера.
+- **статус:** [~] — **в review:** PR [#1607](https://github.com/davila7/claude-code-templates/pull/1607) открыт, `mergeable_state: clean`, все проверки зелёные, включая `All checks green`. Замечания ботов обработаны коммитом `6c21462` (триггер до начала работы, путь для позднего запуска, запрет на установку пакетов агентом), треды закрыты и отвечены. Осталось: review и merge мейнтейнера.
 
 ---
 

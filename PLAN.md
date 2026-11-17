@@ -272,9 +272,11 @@ npx witness badge          # SVG + badge.json для README
   Workflow `.github/workflows/publish-vscode.yml` (trigger `workflow_dispatch` и теги
   `vscode-v*`) собирает VSIX и вызывает `vsce publish --oidc`; права job —
   `contents: read`, `id-token: write`. Первый успешный прогон: 44155696665.
-  `0.1.0` опубликован 17.11.2026, в кабинете publisher статус **Verifying** (вирусный
-  скан и индексация), публичная страница и `code --install-extension` до окончания
-  скана отдают 404 / «Extension not found». Это ожидаемо.
+  `0.1.0` опубликован 17.11.2026, вирусный скан занял несколько минут (статус Verifying),
+  после чего публичная страница отдала HTTP 200. Установка из Marketplace проверена:
+  `code --install-extension shamanch.witness-vscode` → `v0.1.0 was successfully installed`;
+  локальная заглушка `witness.witness-vscode` удалена. В VS Code остаётся
+  `shamanch.witness-vscode`.
 - Навык отправлен в aitmpl: PR [#1607](https://github.com/davila7/claude-code-templates/pull/1607),
   ветка `add-witness-skill` в форке `shamanch/claude-code-templates`. CI зелёный,
   `mergeable: true`; ждёт review мейнтейнера. Замечания ботов обработаны в коммите
