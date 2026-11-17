@@ -1,0 +1,31 @@
+name: Publish VS Code extension
+
+# Публикация в VS Code Marketplace по Trusted Publishing (OIDC).
+# PAT не нужен: Marketplace доверяет конкретному workflow из политики publisher'а.
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "vscode-v*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    defaults:
+      run:
+        working-directory: vscode
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Package extension
+        run: npx --yes @vscode/vsce@latest package
+
+      - name: Publish to Marketplace
+        run: npx --yes @vscode/vsce@latest publish --packagePath "$(ls -1 *.vsix | head -n 1)" --oidc
