@@ -172,8 +172,8 @@
 
 ### T9.2 — Публикация расширения
 - **acceptance:** расширение опубликовано реальным publisher, устанавливается из Marketplace.
-- **verify:** `code --install-extension <publisher>.witness-vscode`.
-- **статус:** [ ] — **заблокировано:** нужен реальный publisher ID и PAT с правом Marketplace → Manage; `"publisher": "witness"` — заглушка. VSIX проверен установкой в VS Code: `code --install-extension witness-vscode-0.1.0.vsix` → `witness.witness-vscode`.
+- **verify:** `code --install-extension shamanch.witness-vscode`.
+- **статус:** [~] — **опубликовано, идёт скан:** publisher `shamanch` создан вручную, `"publisher": "shamanch"` в манифесте. Публикация без PAT — Trusted Publishing (OIDC), политика `Release` → `shamanch/observer`, workflow `publish-vscode.yml`. Прогон 44155696665 успешен, версия `0.1.0` в кабинете publisher со статусом **Verifying** (Availability Public). Публичная страница и установка из Marketplace отдают 404 / «Extension not found» до окончания вирусного скана. VSIX проверен локальной установкой: `code --install-extension witness-vscode-0.1.0.vsix` → `witness.witness-vscode` (заглушка publisher ещё стоит). Осталось: дождаться Published и установить `shamanch.witness-vscode`.
 
 ### T9.3 — Навык `witness`
 - **files:** `skills/witness/SKILL.md`
@@ -184,7 +184,7 @@
 ### T9.4 — PR в aitmpl
 - **acceptance:** навык добавлен в `davila7/claude-code-templates` по пути `cli-tool/components/skills/development/witness/SKILL.md`.
 - **verify:** файл виден в upstream-репозитории, каталог aitmpl его показывает.
-- **статус:** [ ] — **в review:** PR [#1607](https://github.com/davila7/claude-code-templates/pull/1607) открыт; ждёт проверок CI и review мейнтейнера.
+- **статус:** [~] — **в review:** PR [#1607](https://github.com/davila7/claude-code-templates/pull/1607) открыт, `mergeable: true`, CI зелёный. Замечания ботов обработаны коммитом `6c21462` (триггер до начала работы, путь для позднего запуска, запрет на установку пакетов агентом), треды закрыты. Осталось: review и merge мейнтейнера.
 
 ---
 

@@ -261,12 +261,27 @@ npx witness badge          # SVG + badge.json для README
 - Навык `skills/witness/SKILL.md` — для OpenCode, Claude Code и каталога aitmpl
   (`components/skills/development/<name>/SKILL.md`).
 
-**Внешние блокеры, которые нельзя закрыть кодом:**
-
-- VS Code Marketplace требует реального publisher (`"publisher": "witness"` — заглушка)
-  и PAT с правом Marketplace → Manage. VSIX проверен локальной установкой:
-  `code --install-extension vscode/witness-vscode-0.1.0.vsix` → `witness.witness-vscode`.
+- VS Code: publisher **`shamanch`** создан вручную (reCAPTCHA), расширение —
+  `shamanch.witness-vscode`. Публикация идёт без PAT, через **Trusted Publishing (OIDC)**:
+  у аккаунта нет организации Azure DevOps, а PAT в Azure DevOps отменяют 1 декабря 2026.
+  Политика `Release` привязана к `shamanch/observer`, workflow `publish-vscode.yml`.
+  Workflow `.github/workflows/publish-vscode.yml` (trigger `workflow_dispatch` и теги
+  `vscode-v*`) собирает VSIX и вызывает `vsce publish --oidc`; права job —
+  `contents: read`, `id-token: write`. Первый успешный прогон: 44155696665.
+  `0.1.0` опубликован 17.11.2026, в кабинете publisher статус **Verifying** (вирусный
+  скан и индексация), публичная страница и `code --install-extension` до окончания
+  скана отдают 404 / «Extension not found». Это ожидаемо.
 - Навык отправлен в aitmpl: PR [#1607](https://github.com/davila7/claude-code-templates/pull/1607),
-  ветка `add-witness-skill` в форке `shamanch/claude-code-templates`. Дальше — CI и review мейнтейнера.
+  ветка `add-witness-skill` в форке `shamanch/claude-code-templates`. CI зелёный,
+  `mergeable: true`; ждёт review мейнтейнера. Замечания ботов обработаны в коммите
+  `6c21462`: описание триггерит навык до начала работы, добавлен честный путь для
+  позднего запуска («no baseline: before/after comparison unavailable»), убрана
+  рекомендация запускать установку пакета — установку решает человек.
 - Навык переведён на английский: каталог aitmpl англоязычный, агенту язык инструкции безразличен.
   Русская версия остаётся в `skills/witness/SKILL.ru.md`.
+
+**Внешние блокеры, которые нельзя закрыть кодом:**
+
+- Marketplace ещё не закончил скан `0.1.0` — установка из Marketplace станет доступна
+  после смены статуса на Published.
+- PR #1607 ждёт review мейнтейнера aitmpl.
