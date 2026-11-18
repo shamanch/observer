@@ -1,5 +1,10 @@
 # Witness
 
+[![npm](https://img.shields.io/npm/v/witness-cli)](https://www.npmjs.com/package/witness-cli)
+[![VS Code Marketplace](https://img.shields.io/badge/VS%20Code%20Marketplace-install-0098FF?logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=shamanch.witness-vscode)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Node 24+](https://img.shields.io/badge/node-%E2%89%A524-339933?logo=node.js&logoColor=white)](package.json)
+
 **Проверяет, что AI-агент реально сделал задачу.**
 
 Агент говорит «готово», а фича не работает — потому что тестов не было, а слово модели
@@ -42,6 +47,12 @@ npm i -g witness-cli
 
 ```bash
 npx witness-cli --help
+```
+
+Расширение для VS Code (тонкая обёртка над CLI, сам CLI должен быть установлен):
+
+```bash
+code --install-extension shamanch.witness-vscode
 ```
 
 Для локальной разработки из клона:
