@@ -157,8 +157,14 @@
 
 ### T8.3 — Публикация
 - **acceptance:** `npm publish` выполнен, `npx witness-cli --version` работает у стороннего пользователя.
-- **verify:** `npm view witness-cli version` → `0.1.0`.
-- **статус:** [x] — `witness-cli@0.1.0` опубликован в registry; установка из npm проверена end-to-end (`INSTALLED PACKAGE OK`). Первая публикация прошла через staged publishing: placeholder `0.0.0-stage`, затем `0.1.0`.
+- **verify:** `npm view witness-cli version`.
+- **статус:** [x] — `witness-cli@0.1.0` опубликован в registry; установка из npm проверена end-to-end (`INSTALLED PACKAGE OK`). Первая публикация прошла через staged publishing: placeholder `0.0.0-stage`, затем `0.1.0`. Актуальная версия — `0.1.3`.
+
+### T8.4 — Публикация по Trusted Publishing
+- **files:** `.github/workflows/publish-npm.yml`
+- **acceptance:** публикация идёт из GitHub Actions по OIDC, без долгоживущего токена; provenance приложен; постоянные publish-токены отключены.
+- **verify:** прогон workflow → success; `npm view witness-cli version` → `0.1.3`; `npm view witness-cli@0.1.3 dist.attestations --json` содержит `provenance` (SLSA v1); установка `0.1.3` из registry → `witness --version` → `0.1.3`.
+- **статус:** [x] — конфигурация npm: GitHub Actions, `shamanch/observer`, `publish-npm.yml`, права `publish` + `stage publish`; включено «Require two-factor authentication and disallow bypass 2fa tokens». Прогон 44239379667 успешен, `0.1.3` опубликован по OIDC. `.npmrc` очищен через `npm logout`.
 
 ---
 
