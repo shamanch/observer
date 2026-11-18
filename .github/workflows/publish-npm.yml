@@ -1,0 +1,30 @@
+name: Publish npm package
+
+# Публикация в npm по Trusted Publishing (OIDC): долгоживущий токен не нужен.
+# Запуск только вручную, чтобы случайный тег не отправил в registry чужую версию.
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # обмен OIDC-токена на право публикации
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      # Trusted Publishing требует npm >= 11.5.2.
+      - name: Update npm
+        run: npm install -g npm@latest && npm --version
+
+      - name: Test
+        run: npm test
+
+      - name: Publish
+        run: npm publish --provenance --access public
